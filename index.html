@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+       SEO / METADATOS
+       CAMBIAR AQUÍ: título de la pestaña y descripción para Google
+       ============================================================ -->
+  <title>Impulso Digital | Creación de Webs y Marketing con IA</title>
+  <meta name="description" content="Creamos webs profesionales que venden y las potenciamos con Meta Ads, Google Ads, chatbots y CRM. Tu sistema digital completo, en un solo lugar. Tandil." />
+  <meta name="theme-color" content="#050a18" />
+
+  <!-- Open Graph (vista previa al compartir el link) -->
+  <meta property="og:title" content="Impulso Digital | Creación de Webs y Marketing con IA" />
+  <meta property="og:description" content="Webs que venden, campañas en Meta y Google Ads, chatbots y CRM. Tu sistema digital completo." />
+  <meta property="og:image" content="/images/hero-poster.jpg" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon (cohete). CAMBIAR AQUÍ si querés usar un .ico propio -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
+
+  <!-- Tipografías: Sora (títulos) + Manrope (texto).
+       CAMBIAR AQUÍ las fuentes si cambia la identidad de marca -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/src/styles.css" />
+
+  <!-- Marca el documento como "con JS" para que las animaciones
+       de entrada no oculten contenido si JS falla -->
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       FONDO GLOBAL "RED NEURONAL" (IA)
+       Canvas con nodos y conexiones que reaccionan al mouse.
+       Se dibuja desde src/main.js. AJUSTAR CANTIDAD DE NODOS en CONFIG.
+       ============================================================ -->
+  <canvas id="redNeuronal" aria-hidden="true"></canvas>
+
+  <!-- Luz que sigue al cursor (solo desktop, ver main.js) -->
+  <div class="spotlight" id="spotlight" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       1. HEADER FIJO
+       CAMBIAR AQUÍ: logo, links del menú y botón de WhatsApp
+       - El logo se busca en /public/logo/impulso-digital-logo.png
+         (si el archivo no existe, se muestra solo el texto de marca)
+       ============================================================ -->
+  <header class="header" id="header">
+    <div class="header__inner">
+
+      <a class="header__brand" href="#inicio" aria-label="Impulso Digital, ir al inicio">
+        <!-- CAMBIAR LOGO AQUÍ: reemplazá el archivo en public/logo/ -->
+        <img class="header__logo" src="/logo/impulso-digital-logo.png" alt=""
+             width="40" height="40" onerror="this.classList.add('is-missing')" />
+        <span class="header__wordmark">Impulso<em>Digital</em></span>
+      </a>
+
+      <nav class="header__nav" id="nav" aria-label="Navegación principal">
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#contacto">Contacto</a>
+
+        <!-- CAMBIAR WHATSAPP AQUÍ (también en el hero, CTA final y src/main.js) -->
+        <a class="btn btn--primary btn--sm header__cta"
+           href="https://wa.me/5492494601118?text=Hola,%20quiero%20impulsar%20mi%20negocio%20con%20Impulso%20Digital"
+           target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0v-1a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-1 0"/></svg>
+          WhatsApp
+        </a>
+      </nav>
+
+      <!-- Botón hamburguesa (solo visible en mobile) -->
+      <button class="header__toggle" id="navToggle" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         2. HERO FULL SCREEN
+         CAMBIAR TEXTOS AQUÍ: título, subtítulo, bajada y botones
+         CAMBIAR VIDEO AQUÍ: src del <video> y poster
+         Nota: el video es vertical (9:16), por eso en desktop se
+         muestra como "portal" con glow al lado del texto, y en
+         mobile ocupa la pantalla. Si algún día usás un video 16:9
+         sin texto incrustado, podés volverlo fondo total con CSS.
+         ============================================================ -->
+    <section class="hero" id="inicio">
+
+      <!-- Atmósfera de fondo: gradientes + grilla digital
+           (las partículas ahora son la red neuronal global) -->
+      <div class="hero__atmosphere" aria-hidden="true">
+        <div class="hero__glow hero__glow--cyan"></div>
+        <div class="hero__glow hero__glow--blue"></div>
+        <div class="hero__grid"></div>
+      </div>
+
+      <div class="hero__inner">
+
+        <div class="hero__copy">
+          <!-- Subtítulo / eyebrow -->
+          <p class="hero__eyebrow" data-hero="1">
+            <span class="hero__eyebrow-dot"></span>
+            <!-- data-scramble = el texto se "decodifica" al cargar -->
+            <span data-scramble>Agencia de Marketing Digital</span>
+          </p>
+
+          <!-- Título principal -->
+          <h1 class="hero__title" data-hero="2">
+            Impulso<br /><span class="text-gradient">Digital</span>
+          </h1>
+
+          <!-- Bajada -->
+          <p class="hero__text" data-hero="3">
+            ¿Buscás un impulso digital? Creamos tu web profesional y la
+            potenciamos con Meta Ads, Google Ads, chatbots y CRM. Todo tu
+            sistema de ventas, en un solo lugar.
+          </p>
+
+          <!-- Botones CTA -->
+          <div class="hero__actions" data-hero="4">
+            <!-- CAMBIAR WHATSAPP AQUÍ · data-magnetic = el botón "atrae" al cursor -->
+            <a class="btn btn--primary" data-magnetic
+               href="https://wa.me/5492494601118?text=Hola,%20quiero%20una%20web%20profesional%20con%20Impulso%20Digital"
+               target="_blank" rel="noopener">
+              Quiero mi web
+            </a>
+            <a class="btn btn--ghost" href="#servicios">Ver servicios</a>
+          </div>
+        </div>
+
+        <!-- Video protagonista del cohete -->
+        <figure class="hero__media" data-hero="5">
+          <div class="hero__frame">
+            <!-- CAMBIAR VIDEO AQUÍ: reemplazá el archivo en public/videos/
+                 CAMBIAR POSTER AQUÍ: reemplazá public/images/hero-poster.jpg -->
+            <video class="hero__video" id="heroVideo"
+                   src="/videos/cohete-impulso-hero.mp4"
+                   poster="/images/hero-poster.jpg"
+                   autoplay muted loop playsinline
+                   preload="metadata"></video>
+            <!-- Capa oscura / gradiente para legibilidad sobre el video -->
+            <div class="hero__veil" aria-hidden="true"></div>
+          </div>
+          <div class="hero__frame-glow" aria-hidden="true"></div>
+        </figure>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CINTA DE SERVICIOS (marquee infinito)
+         CAMBIAR TEXTOS AQUÍ: las palabras se repiten 2 veces para
+         que el loop sea continuo (editá las dos listas igual)
+         ============================================================ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Creación de webs</span><i>✦</i><span>Tiendas online</span><i>✦</i><span>Meta Ads</span><i>✦</i><span>Google Ads</span><i>✦</i><span>Chatbots con IA</span><i>✦</i><span>CRM</span><i>✦</i><span>Automatización</span><i>✦</i><span>SEO local</span><i>✦</i>
+        <span>Creación de webs</span><i>✦</i><span>Tiendas online</span><i>✦</i><span>Meta Ads</span><i>✦</i><span>Google Ads</span><i>✦</i><span>Chatbots con IA</span><i>✦</i><span>CRM</span><i>✦</i><span>Automatización</span><i>✦</i><span>SEO local</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         3. SECCIÓN "DESPEGUE DIGITAL" (scroll largo + pin con GSAP)
+         CAMBIAR TEXTOS AQUÍ: los 6 pasos están en .despegue__step
+         AJUSTAR VELOCIDAD DEL SCROLL: en src/main.js, CONFIG.despegueScroll
+         ============================================================ -->
+    <section class="despegue" id="despegue">
+      <!-- Este contenedor queda "pineado" (fijo) mientras se scrollea -->
+      <div class="despegue__stage" id="despegueStage">
+
+        <header class="despegue__head">
+          <h2 class="despegue__title">Despegue digital</h2>
+          <p class="despegue__sub">Así impulsamos tu negocio, paso a paso.</p>
+        </header>
+
+        <!-- Cohete SINCRONIZADO con el scroll (video scrubbing):
+             este video está recortado a la zona del cohete y codificado
+             con todos los frames clave; main.js mueve su currentTime
+             según el progreso del scroll. Si cambiás el video, regenerá
+             la versión "scrub" (ver instrucciones en el README o pedirlo). -->
+        <!-- Por defecto usamos el cohete SIN FONDO (webm con canal alfa).
+             La clase sin-fondo quita la máscara. main.js solo cambia a la
+             versión con fondo (mp4 + máscara) si el navegador es Safari o
+             si el webm falla al cargar. Sin poster para que no haya ningún
+             "recuadro" con fondo mientras carga. -->
+        <div class="despegue__rocket sin-fondo" id="despegueRocket">
+          <div class="despegue__crop">
+            <video class="despegue__video" id="despegueVideo"
+                   src="/videos/cohete-alpha.webm"
+                   muted playsinline preload="auto"></video>
+          </div>
+          <!-- Estela luminosa azul/cyan -->
+          <div class="despegue__trail" id="despegueTrail" aria-hidden="true"></div>
+        </div>
+
+        <!-- Líneas de velocidad + partículas digitales -->
+        <div class="despegue__lines" id="despegueLines" aria-hidden="true"></div>
+        <div class="despegue__particles" id="despegueParticles" aria-hidden="true"></div>
+
+        <!-- Textos progresivos. CAMBIAR TEXTOS AQUÍ -->
+        <ul class="despegue__steps" id="despegueSteps">
+          <li class="despegue__step" data-side="left">
+            <h3>Diagnóstico digital</h3>
+            <p>Analizamos tu presencia y detectamos oportunidades.</p>
+          </li>
+          <li class="despegue__step" data-side="right">
+            <h3>Estrategia con IA</h3>
+            <p>Un plan claro, potenciado con inteligencia artificial.</p>
+          </li>
+          <li class="despegue__step" data-side="left">
+            <h3>Tu web profesional</h3>
+            <p>El centro de tu negocio, lista para vender.</p>
+          </li>
+          <li class="despegue__step" data-side="right">
+            <h3>Meta y Google Ads</h3>
+            <p>Tráfico real hacia tu web, cada peso cuidado.</p>
+          </li>
+          <li class="despegue__step" data-side="left">
+            <h3>Automatización</h3>
+            <p>Sistemas que trabajan por tu negocio 24/7.</p>
+          </li>
+          <li class="despegue__step" data-side="right">
+            <h3>Crecimiento medible</h3>
+            <p>Datos reales para decidir y escalar.</p>
+          </li>
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         4. SERVICIOS (cards glassmorphism con hover 3D)
+         CAMBIAR TEXTOS AQUÍ: título, descripción e íconos de cada card
+         Las cards con class="card--featured" tienen acento especial
+         ============================================================ -->
+    <section class="servicios" id="servicios">
+      <div class="container">
+
+        <header class="section-head" data-reveal>
+          <p class="section-eyebrow">Servicios</p>
+          <h2 class="section-title">Tu web, el centro de todo<br />tu sistema de ventas</h2>
+          <p class="section-text">Creamos tu sitio y le sumamos las campañas, los bots y el CRM que lo hacen vender.</p>
+        </header>
+
+        <div class="servicios__grid">
+
+          <!-- ============================================================
+               CARD PROTAGONISTA · CREACIÓN DE WEBS (nuestra especialidad)
+               Ocupa todo el ancho de la grilla (grid-column: 1 / -1).
+               CAMBIAR AQUÍ el texto, la lista y el link de WhatsApp.
+               ============================================================ -->
+          <article class="card card--web" data-reveal>
+            <div class="card--web__copy">
+              <span class="card__badge">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.1 6.3H20l-5 4 1.9 6-4.9-3.6L7 20l1.9-6-5-4h5.9z"/></svg>
+                Nuestra especialidad
+              </span>
+              <div class="card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M6 6.5h.01"/><path d="M8.5 6.5h.01"/><path d="M11 6.5h.01"/></svg>
+              </div>
+              <h3 class="card__title">Creación de webs que venden</h3>
+              <p class="card__text">
+                Diseñamos y desarrollamos tu sitio a medida: rápido, moderno
+                y pensado para convertir visitas en clientes. De la idea al
+                sitio publicado, optimizado y listo para crecer.
+              </p>
+              <a class="btn btn--primary" data-magnetic
+                 href="https://wa.me/5492494601118?text=Hola,%20quiero%20una%20web%20profesional%20con%20Impulso%20Digital"
+                 target="_blank" rel="noopener">
+                Quiero mi web
+              </a>
+            </div>
+
+            <ul class="card--web__list">
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
+                Webs institucionales y profesionales
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
+                Tiendas online (e-commerce)
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
+                Landing pages de alta conversión
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
+                Optimizadas para celular y para Google
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
+                Autogestionables: las actualizás vos mismo
+              </li>
+            </ul>
+          </article>
+
+          <article class="card card--featured" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M18 8a3 3 0 0 1 0 6"/><path d="M10 8v11a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-5"/><path d="M12 8h0l4.5-2.7A1 1 0 0 1 18 6.2v9.6a1 1 0 0 1-1.5.9L12 14H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h8"/></svg>
+            </div>
+            <h3 class="card__title">Meta Ads</h3>
+            <p class="card__text">Campañas en Instagram y Facebook que llegan a quien está listo para comprar.</p>
+          </article>
+
+          <article class="card card--featured" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+            </div>
+            <h3 class="card__title">Google Ads</h3>
+            <p class="card__text">Aparecé primero justo cuando buscan lo que ofrecés. Cada peso medido.</p>
+          </article>
+
+          <article class="card" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 17l-2 3v-3"/><circle cx="9" cy="10.5" r=".8" fill="currentColor" stroke="none"/><circle cx="15" cy="10.5" r=".8" fill="currentColor" stroke="none"/><path d="M12 2v2"/></svg>
+            </div>
+            <h3 class="card__title">Chatbots con IA</h3>
+            <p class="card__text">Atienden, responden y agendan turnos por vos, las 24 horas.</p>
+          </article>
+
+          <article class="card" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="3.5"/><path d="M20 21v-2a3.5 3.5 0 0 0-3-3.4"/><path d="M4 21v-2a3.5 3.5 0 0 1 3-3.4"/></svg>
+            </div>
+            <h3 class="card__title">CRM a medida</h3>
+            <p class="card__text">Ordená tus contactos y seguí cada venta sin que se te escape nadie.</p>
+          </article>
+
+          <article class="card" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 4l1.8 5.2L19 11l-5.2 1.8L12 18l-1.8-5.2L5 11l5.2-1.8z"/><path d="M18.5 16.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg>
+            </div>
+            <h3 class="card__title">Automatización con IA</h3>
+            <p class="card__text">Seguimientos, recordatorios y procesos en piloto automático.</p>
+          </article>
+
+          <article class="card" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            </div>
+            <h3 class="card__title">SEO local</h3>
+            <p class="card__text">Que te encuentren primero cuando buscan en tu ciudad.</p>
+          </article>
+
+          <article class="card" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M4 17l5-5 4 3 7-8"/><path d="M16 7h4v4"/></svg>
+            </div>
+            <h3 class="card__title">Contenido y análisis</h3>
+            <p class="card__text">Posteos con identidad y métricas claras de lo que de verdad funciona.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         4B. IA EN ACCIÓN · demo de automatización
+         Un chat que se escribe solo: muestra a la IA atendiendo a un
+         cliente de madrugada. CAMBIAR LA CONVERSACIÓN en src/main.js
+         (constante GUION_CHAT, sección 10).
+         ============================================================ -->
+    <section class="ia" id="ia">
+      <div class="container ia__inner">
+
+        <div class="ia__copy" data-reveal>
+          <h2 class="section-title">Mientras dormís,<br />tu negocio <span class="text-gradient">sigue vendiendo</span></h2>
+          <p class="section-text ia__lead">
+            Nuestras automatizaciones con IA atienden consultas, agendan
+            turnos y hacen seguimiento. Sin demoras, sin clientes perdidos.
+          </p>
+
+          <ul class="ia__puntos">
+            <li>
+              <span class="ia__punto-icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M13 3L4 14h6l-1 7 9-11h-6z"/></svg>
+              </span>
+              Respuestas al instante, las 24 horas
+            </li>
+            <li>
+              <span class="ia__punto-icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+              </span>
+              Seguimiento automático de cada consulta
+            </li>
+            <li>
+              <span class="ia__punto-icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>
+              </span>
+              Ningún cliente se queda sin respuesta
+            </li>
+          </ul>
+        </div>
+
+        <!-- Teléfono con el chat automático -->
+        <div class="ia__phone" data-reveal>
+          <div class="chat">
+            <header class="chat__bar">
+              <span class="chat__avatar" aria-hidden="true">🚀</span>
+              <div>
+                <strong>Impulso IA</strong>
+                <small><span class="chat__online"></span> en línea</small>
+              </div>
+              <span class="chat__badge">Automatizado</span>
+            </header>
+            <!-- Los mensajes los escribe main.js (sección 10) -->
+            <div class="chat__mensajes" id="chatMensajes" aria-live="polite"></div>
+          </div>
+          <div class="ia__phone-glow" aria-hidden="true"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         5. PROCESO DE TRABAJO (timeline con línea luminosa)
+         CAMBIAR TEXTOS AQUÍ: cada paso es un <li class="paso">
+         ============================================================ -->
+    <section class="proceso" id="proceso">
+      <div class="container">
+
+        <header class="section-head" data-reveal>
+          <h2 class="section-title">Cómo trabajamos</h2>
+          <p class="section-text">Un proceso claro, de la primera charla al crecimiento.</p>
+        </header>
+
+        <ol class="proceso__timeline" id="procesoTimeline">
+          <div class="proceso__line" aria-hidden="true"><span id="procesoLineFill"></span></div>
+
+          <li class="paso" data-reveal>
+            <span class="paso__num">1</span>
+            <div class="paso__body">
+              <h3 class="paso__title">Diagnóstico</h3>
+              <p class="paso__text">Auditamos tu presencia digital y la de tu competencia.</p>
+            </div>
+          </li>
+
+          <li class="paso" data-reveal>
+            <span class="paso__num">2</span>
+            <div class="paso__body">
+              <h3 class="paso__title">Estrategia</h3>
+              <p class="paso__text">Definimos objetivos, canales y mensajes con apoyo de IA.</p>
+            </div>
+          </li>
+
+          <li class="paso" data-reveal>
+            <span class="paso__num">3</span>
+            <div class="paso__body">
+              <h3 class="paso__title">Producción</h3>
+              <p class="paso__text">Creamos tu web, tu contenido y tus campañas.</p>
+            </div>
+          </li>
+
+          <li class="paso" data-reveal>
+            <span class="paso__num">4</span>
+            <div class="paso__body">
+              <h3 class="paso__title">Lanzamiento</h3>
+              <p class="paso__text">Activamos todo y monitoreamos en tiempo real.</p>
+            </div>
+          </li>
+
+          <li class="paso" data-reveal>
+            <span class="paso__num">5</span>
+            <div class="paso__body">
+              <h3 class="paso__title">Optimización</h3>
+              <p class="paso__text">Medimos, ajustamos y escalamos lo que funciona.</p>
+            </div>
+          </li>
+        </ol>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         6. CTA FINAL
+         CAMBIAR TEXTOS AQUÍ y CAMBIAR WHATSAPP AQUÍ
+         ============================================================ -->
+    <section class="cta" id="contacto">
+      <div class="cta__glow" aria-hidden="true"></div>
+      <div class="container">
+        <div class="cta__box" data-reveal>
+          <h2 class="cta__title">
+            ¿Listo para tener una <span class="text-gradient">web que venda</span><br />
+            y un sistema digital que impulse tu negocio?
+          </h2>
+          <a class="btn btn--primary btn--lg" data-magnetic
+             href="https://wa.me/5492494601118?text=Hola,%20quiero%20impulsar%20mi%20negocio%20con%20Impulso%20Digital"
+             target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0v-1a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-1 0"/></svg>
+            Hablar por WhatsApp
+          </a>
+          <p class="cta__note">Respondemos en el día.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       CAMBIAR AQUÍ: redes sociales y datos de contacto
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="footer__brand">Impulso<em>Digital</em></span>
+      <nav class="footer__nav" aria-label="Navegación del pie">
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <p class="footer__copy">© 2026 Impulso Digital. Marketing con IA.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

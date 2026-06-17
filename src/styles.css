@@ -1,0 +1,1240 @@
+/* ================================================================
+   IMPULSO DIGITAL · ESTILOS
+   ----------------------------------------------------------------
+   ÍNDICE
+   01. Variables (CAMBIAR COLORES AQUÍ)
+   02. Reset y base
+   03. Utilidades (container, botones, títulos de sección)
+   04. Header fijo + menú mobile
+   05. Hero
+   06. Sección "Despegue digital"
+   07. Servicios (cards glass + 3D)
+   08. Proceso (timeline luminosa)
+   09. CTA final
+   10. Footer
+   11. Accesibilidad: prefers-reduced-motion
+   ================================================================ */
+
+
+/* ================================================================
+   01. VARIABLES · CAMBIAR COLORES AQUÍ
+   Toda la identidad visual sale de estas variables.
+   ================================================================ */
+:root {
+  /* Fondos */
+  --bg:        #050a18;   /* navy casi negro (fondo general) */
+  --bg-soft:   #0a1228;   /* navy un paso más claro (secciones) */
+  --surface:   rgba(15, 26, 56, 0.55);   /* vidrio de las cards */
+  --line:      rgba(130, 175, 255, 0.14); /* bordes sutiles */
+
+  /* Texto */
+  --ink:       #eef3ff;   /* texto principal (blanco azulado) */
+  --muted:     #9aabcf;   /* texto secundario */
+
+  /* Acentos */
+  --blue:      #2563ff;   /* azul eléctrico */
+  --cyan:      #38d9ff;   /* cyan */
+  --flame:     #ff8a4c;   /* naranja del fuego del cohete (usar poco) */
+
+  /* Gradiente de marca (botones, texto destacado) */
+  --grad: linear-gradient(115deg, var(--blue), var(--cyan));
+
+  /* Tipografías (cargadas en index.html) */
+  --font-display: 'Sora', sans-serif;     /* títulos */
+  --font-body:    'Manrope', sans-serif;  /* texto */
+
+  /* Forma: un solo sistema de radios en toda la web */
+  --r-lg: 24px;   /* marcos grandes (video) */
+  --r-md: 16px;   /* cards */
+  --r-pill: 999px;/* botones */
+
+  /* Layout */
+  --container: 1180px;
+  --header-h: 72px;
+}
+
+
+/* ================================================================
+   02. RESET Y BASE
+   ================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  /* Deja espacio para el header fijo al navegar con anclas */
+  scroll-padding-top: calc(var(--header-h) + 12px);
+  /* El fondo vive en <html> para que el canvas de la red neuronal
+     (z-index -1) pueda verse "a través" del body */
+  background: var(--bg);
+}
+
+body {
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+::selection { background: rgba(56, 217, 255, 0.25); }
+
+/* ---- Red neuronal de fondo (canvas global, lo dibuja main.js) ---- */
+#redNeuronal {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---- Luz que sigue al cursor (solo desktop) ---- */
+.spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background: radial-gradient(
+    460px circle at var(--sx, -300px) var(--sy, -300px),
+    rgba(56, 217, 255, 0.05),
+    transparent 70%
+  );
+}
+
+/* ---- Grano cinematográfico sutil sobre toda la página ---- */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+
+/* ================================================================
+   03. UTILIDADES
+   ================================================================ */
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 40px);
+}
+
+/* Texto con gradiente azul→cyan */
+.text-gradient {
+  background: linear-gradient(115deg, #6ea8ff, var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- Botones ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 30px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+              background-color 0.25s ease, border-color 0.25s ease;
+}
+.btn svg { width: 20px; height: 20px; flex: none; }
+
+/* Botón principal: azul eléctrico con glow sutil */
+.btn--primary {
+  background: linear-gradient(115deg, #1f4fd8, var(--blue) 55%, #1e8fe0);
+  color: #ffffff;
+  box-shadow: 0 8px 30px rgba(37, 99, 255, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(56, 217, 255, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* Botón secundario: borde de vidrio */
+.btn--ghost {
+  border: 1px solid var(--line);
+  background: rgba(130, 175, 255, 0.05);
+  color: var(--ink);
+  backdrop-filter: blur(8px);
+}
+.btn--ghost:hover {
+  border-color: rgba(56, 217, 255, 0.45);
+  background: rgba(56, 217, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.btn--sm { padding: 10px 20px; font-size: 0.9rem; }
+.btn--lg { padding: 19px 40px; font-size: 1.1rem; }
+
+/* ---- Encabezados de sección ---- */
+.section-head { max-width: 640px; margin-bottom: clamp(44px, 7vw, 72px); }
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: clamp(1.9rem, 4.2vw, 3rem);
+  margin-bottom: 16px;
+}
+
+.section-text { color: var(--muted); font-size: 1.05rem; }
+
+
+/* ================================================================
+   04. HEADER FIJO
+   ================================================================ */
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  transition: background-color 0.35s ease, border-color 0.35s ease,
+              backdrop-filter 0.35s ease;
+  border-bottom: 1px solid transparent;
+}
+
+/* Estado al scrollear (lo activa main.js): se vuelve vidrio */
+.header.is-scrolled {
+  background: rgba(5, 10, 24, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom-color: var(--line);
+}
+
+.header__inner {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 40px);
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.header__brand { display: inline-flex; align-items: center; gap: 12px; }
+
+.header__logo { width: 40px; height: 40px; object-fit: contain; }
+.header__logo.is-missing { display: none; } /* si falta el PNG, queda el texto */
+
+.header__wordmark, .footer__brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+.header__wordmark em, .footer__brand em {
+  font-style: normal;
+  background: linear-gradient(115deg, #6ea8ff, var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 3vw, 36px);
+}
+.header__nav > a:not(.btn) {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+.header__nav > a:not(.btn):hover { color: var(--ink); }
+
+/* Hamburguesa (solo mobile) */
+.header__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  padding: 10px;
+}
+.header__toggle span {
+  display: block;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.3s ease;
+}
+.header__toggle[aria-expanded="true"] span:first-child { transform: translateY(4px) rotate(45deg); }
+.header__toggle[aria-expanded="true"] span:last-child  { transform: translateY(-4px) rotate(-45deg); }
+
+
+/* ================================================================
+   05. HERO
+   ================================================================ */
+.hero {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding-top: calc(var(--header-h) + 24px);
+  padding-bottom: 48px;
+  overflow: hidden;
+}
+
+/* --- Atmósfera de fondo (profundidad sin 3D real) --- */
+.hero__atmosphere { position: absolute; inset: 0; pointer-events: none; }
+
+.hero__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+}
+.hero__glow--cyan {
+  width: 46vw; height: 46vw;
+  top: -14vw; left: -10vw;
+  background: radial-gradient(circle, rgba(56, 217, 255, 0.13), transparent 65%);
+}
+.hero__glow--blue {
+  width: 52vw; height: 52vw;
+  bottom: -20vw; right: -12vw;
+  background: radial-gradient(circle, rgba(37, 99, 255, 0.16), transparent 65%);
+}
+
+/* Grilla digital sutil, desvanecida con máscara radial */
+.hero__grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(130, 175, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(130, 175, 255, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 75%);
+}
+
+/* Partículas (las crea main.js para la sección despegue) */
+.particle {
+  position: absolute;
+  left: var(--x);
+  bottom: -4px;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: var(--cyan);
+  opacity: 0;
+  animation: particleRise var(--d) linear infinite;
+  animation-delay: var(--delay);
+}
+@keyframes particleRise {
+  0%   { transform: translateY(0);      opacity: 0; }
+  12%  { opacity: var(--o, 0.5); }
+  85%  { opacity: var(--o, 0.5); }
+  100% { transform: translateY(-105vh); opacity: 0; }
+}
+
+/* --- Composición del hero --- */
+.hero__inner {
+  position: relative;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 40px);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: clamp(32px, 5vw, 64px);
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 24px;
+  padding: 8px 18px;
+  border: 1px solid rgba(56, 217, 255, 0.25);
+  border-radius: var(--r-pill);
+  background: rgba(56, 217, 255, 0.06);
+}
+.hero__eyebrow-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+.hero__title {
+  font-size: clamp(3.2rem, 9vw, 6rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  margin-bottom: 24px;
+}
+
+.hero__text {
+  color: var(--muted);
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  max-width: 44ch;
+  margin-bottom: 36px;
+}
+
+.hero__actions { display: flex; flex-wrap: wrap; gap: 16px; }
+
+/* --- Video del cohete en marco "portal" --- */
+.hero__media { position: relative; justify-self: center; }
+
+.hero__frame {
+  position: relative;
+  /* CAMBIAR TAMAÑO DEL VIDEO DEL HERO AQUÍ */
+  width: clamp(300px, 31vw, 450px);
+  aspect-ratio: 9 / 16;
+  max-height: min(82vh, 800px);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid rgba(130, 175, 255, 0.22);
+  box-shadow:
+    0 0 0 1px rgba(5, 10, 24, 0.8),
+    0 30px 80px rgba(3, 8, 22, 0.8),
+    0 0 60px rgba(37, 99, 255, 0.18);
+  /* flotación suave (se apaga con prefers-reduced-motion) */
+  animation: heroFloat 7s ease-in-out infinite;
+}
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+.hero__video { width: 100%; height: 100%; object-fit: cover; }
+
+/* Capa oscura/gradiente sobre el video para integrarlo al fondo */
+.hero__veil {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to top, rgba(5, 10, 24, 0.55), transparent 35%),
+    linear-gradient(to bottom, rgba(5, 10, 24, 0.25), transparent 30%);
+}
+
+/* Resplandor detrás del marco */
+.hero__frame-glow {
+  position: absolute;
+  inset: -12%;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 45%, rgba(56, 217, 255, 0.18), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 50% 90%, rgba(255, 138, 76, 0.10), transparent 70%);
+  filter: blur(20px);
+}
+
+
+/* ================================================================
+   06. SECCIÓN "DESPEGUE DIGITAL"
+   El pin (fijado en pantalla) lo maneja GSAP en main.js.
+   AJUSTAR VELOCIDAD DEL SCROLL: CONFIG.despegueScroll en main.js
+   ================================================================ */
+/* Fondo transparente: la red neuronal global se ve detrás del cohete */
+.despegue { position: relative; }
+
+.despegue__stage {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* leve gradiente de profundidad (sin tapar la red neuronal) */
+  background: radial-gradient(ellipse 70% 55% at 50% 60%, rgba(37, 99, 255, 0.10), transparent 70%);
+}
+
+.despegue__head {
+  position: absolute;
+  top: calc(var(--header-h) + 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 5;
+  width: min(90%, 560px);
+}
+.despegue__title { font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin-bottom: 8px; }
+.despegue__sub { color: var(--muted); font-size: 0.98rem; }
+
+/* Cohete: el mismo video pero recortado con zoom SOLO al cohete
+   (sin marco) y con máscara difuminada para que se funda con el
+   fondo. Así parece el cohete volando, no una tarjeta.
+   AJUSTAR EL ENCUADRE AQUÍ: scale = zoom, transform-origin = qué
+   punto del video queda centrado (x% y%). */
+.despegue__rocket {
+  position: relative;
+  /* Columna alta: muestra todo el recorrido del lanzamiento.
+     CAMBIAR TAMAÑO DEL COHETE AQUÍ (más alto = cohete más grande) */
+  height: min(80vh, 740px);
+  /* misma proporción que el video recortado (320x1280) */
+  aspect-ratio: 320 / 1280;
+  z-index: 4;
+  will-change: transform;
+}
+/* Recorte enmascarado: solo hace falta para el video mp4 SIN
+   transparencia (fallback de Safari/iOS). Cuando el navegador soporta
+   el webm con canal alfa, main.js agrega la clase .sin-fondo y el
+   cohete queda recortado de verdad sobre nuestro fondo. */
+.despegue__crop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  -webkit-mask-image: radial-gradient(ellipse 58% 52% at 50% 50%, black 52%, transparent 82%);
+  mask-image: radial-gradient(ellipse 58% 52% at 50% 50%, black 52%, transparent 82%);
+}
+.despegue__rocket.sin-fondo .despegue__crop {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+/* Con transparencia real, una sombra de luz sutil detrás del cohete */
+.despegue__rocket.sin-fondo::before {
+  content: '';
+  position: absolute;
+  inset: -8%;
+  background: radial-gradient(ellipse 55% 42% at 50% 42%, rgba(56, 217, 255, 0.12), transparent 70%);
+  filter: blur(18px);
+}
+.despegue__video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* Estela luminosa azul/cyan debajo del cohete */
+.despegue__trail {
+  position: absolute;
+  top: 84%;
+  left: 50%;
+  width: 34%;
+  height: 60vh;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top center;
+  background: linear-gradient(to bottom,
+    rgba(255, 138, 76, 0.5),          /* toque naranja del fuego */
+    rgba(56, 217, 255, 0.45) 18%,
+    rgba(37, 99, 255, 0.3) 45%,
+    transparent 90%);
+  filter: blur(14px);
+  border-radius: 50%;
+  will-change: transform, opacity;
+}
+
+/* Líneas de velocidad (las crea main.js) */
+.despegue__lines { position: absolute; inset: 0; z-index: 1; opacity: 0; }
+.despegue__lines .line {
+  position: absolute;
+  top: -20%;
+  left: var(--x);
+  width: 1px;
+  height: var(--h);
+  background: linear-gradient(to bottom, transparent, rgba(56, 217, 255, 0.5), transparent);
+}
+.despegue--active .despegue__lines .line {
+  animation: lineFall var(--d) linear infinite;
+  animation-delay: var(--delay);
+}
+@keyframes lineFall {
+  from { transform: translateY(-40vh); }
+  to   { transform: translateY(160vh); }
+}
+
+/* Partículas de la sección */
+.despegue__particles { position: absolute; inset: 0; z-index: 1; }
+
+/* --- Textos progresivos --- */
+/* Por defecto (sin JS o con reduced motion): lista estática legible */
+.despegue__steps {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  gap: 20px;
+  padding: 32px clamp(20px, 5vw, 40px);
+}
+.despegue__step h3 {
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+  margin-bottom: 6px;
+}
+.despegue__step h3::after {
+  /* subrayado luminoso */
+  content: '';
+  display: block;
+  width: 56px;
+  height: 2px;
+  margin-top: 10px;
+  background: var(--grad);
+  border-radius: 2px;
+  box-shadow: 0 0 14px rgba(56, 217, 255, 0.6);
+}
+.despegue__step p { color: var(--muted); max-width: 30ch; }
+
+/* Con el pin activo (clase que agrega main.js): textos flotando
+   a los costados del cohete, uno por vez */
+.despegue--pin .despegue__stage { flex-direction: row; }
+.despegue--pin .despegue__steps { position: static; padding: 0; }
+.despegue--pin .despegue__step {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(34vw, 330px);
+  opacity: 0;             /* GSAP las muestra una por una */
+  visibility: hidden;
+}
+.despegue--pin .despegue__step[data-side="left"]  { left: clamp(24px, 8vw, 120px); }
+.despegue--pin .despegue__step[data-side="right"] { right: clamp(24px, 8vw, 120px); text-align: right; }
+.despegue--pin .despegue__step[data-side="right"] h3::after { margin-left: auto; }
+.despegue--pin .despegue__step[data-side="right"] p { margin-left: auto; }
+
+
+/* ================================================================
+   06B. MARQUEE · cinta infinita de servicios
+   CAMBIAR VELOCIDAD: el "28s" de animation (menos segundos = más rápido)
+   ================================================================ */
+.marquee {
+  position: relative;
+  border-block: 1px solid var(--line);
+  padding: 16px 0;
+  overflow: hidden;
+  background: rgba(10, 18, 40, 0.4);
+  /* bordes desvanecidos a los costados */
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marqueeMove 28s linear infinite;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  will-change: transform;
+}
+.marquee__track span, .marquee__track i { margin-right: 34px; flex: none; }
+.marquee__track i { color: var(--cyan); font-style: normal; font-size: 0.65rem; opacity: 0.8; }
+
+@keyframes marqueeMove { to { transform: translateX(-50%); } }
+
+
+/* ================================================================
+   07. SERVICIOS · cards glass con hover 3D
+   ================================================================ */
+.servicios {
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 0%, rgba(37, 99, 255, 0.07), transparent 70%),
+    var(--bg-soft);
+}
+
+.servicios__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  position: relative;
+  padding: 30px 26px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  /* el tilt 3D lo aplica main.js con --rx / --ry */
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0));
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+/* Glow interior que sigue al cursor (--mx / --my vienen de main.js) */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%),
+              rgba(56, 217, 255, 0.12), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.card:hover::before { opacity: 1; }
+.card:hover {
+  border-color: rgba(56, 217, 255, 0.4);
+  box-shadow: 0 16px 50px rgba(3, 8, 22, 0.6), 0 0 30px rgba(56, 217, 255, 0.12);
+}
+
+.card__icon {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  color: var(--cyan);
+  background: rgba(56, 217, 255, 0.08);
+  border: 1px solid rgba(56, 217, 255, 0.2);
+}
+.card__icon svg {
+  width: 26px; height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.card__title { font-size: 1.12rem; margin-bottom: 8px; letter-spacing: -0.02em; }
+.card__text { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
+
+/* Cards destacadas (Meta Ads / Automatización IA): borde gradiente */
+.card--featured {
+  background:
+    linear-gradient(var(--bg-soft), var(--bg-soft)) padding-box,
+    linear-gradient(135deg, rgba(56, 217, 255, 0.5), rgba(37, 99, 255, 0.2) 50%, rgba(255, 138, 76, 0.25)) border-box;
+  border: 1px solid transparent;
+}
+.card--featured .card__icon {
+  background: var(--grad);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(37, 99, 255, 0.4);
+}
+
+/* ----------------------------------------------------------------
+   CARD PROTAGONISTA · Creación de webs (nuestra especialidad)
+   Ocupa todo el ancho de la grilla y usa layout de 2 columnas.
+   ---------------------------------------------------------------- */
+.card--web {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(28px, 4vw, 60px);
+  align-items: center;
+  padding: clamp(30px, 4vw, 52px);
+  background:
+    linear-gradient(var(--bg-soft), var(--bg-soft)) padding-box,
+    linear-gradient(135deg, rgba(56, 217, 255, 0.6), rgba(37, 99, 255, 0.3) 55%, rgba(255, 138, 76, 0.3)) border-box;
+  border: 1px solid transparent;
+  /* no aplicamos el tilt 3D acá: es un bloque grande, queda mejor quieto */
+  transform: none;
+}
+.card--web::before { background: radial-gradient(360px circle at var(--mx, 30%) var(--my, 30%), rgba(56, 217, 255, 0.1), transparent 70%); }
+.card--web .card__icon {
+  background: var(--grad);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(37, 99, 255, 0.4);
+}
+.card--web .card__title { font-size: clamp(1.45rem, 2.6vw, 2.05rem); margin-bottom: 12px; }
+.card--web .card__text { font-size: 1rem; line-height: 1.6; margin-bottom: 26px; max-width: 48ch; }
+
+/* Etiqueta "Nuestra especialidad" */
+.card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  margin-bottom: 22px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: rgba(56, 217, 255, 0.08);
+  border: 1px solid rgba(56, 217, 255, 0.25);
+  border-radius: var(--r-pill);
+}
+.card__badge svg { width: 14px; height: 14px; fill: currentColor; stroke: none; }
+
+/* Lista de tipos de web con tildes */
+.card--web__list { display: grid; gap: 14px; align-self: center; }
+.card--web__list li {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.card--web__list li:last-child { border-bottom: none; padding-bottom: 0; }
+.card--web__list svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 4px;
+  border-radius: 7px;
+  color: var(--cyan);
+  background: rgba(56, 217, 255, 0.1);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* ================================================================
+   07B. IA EN ACCIÓN · chat de automatización que se escribe solo
+   La conversación se edita en src/main.js (GUION_CHAT, sección 10)
+   ================================================================ */
+.ia {
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) 0;
+}
+
+.ia__inner {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: clamp(40px, 6vw, 80px);
+}
+
+.ia__lead { margin-bottom: 30px; }
+
+.ia__puntos { display: grid; gap: 14px; }
+.ia__puntos li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+.ia__punto-icono {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--cyan);
+  background: rgba(56, 217, 255, 0.08);
+  border: 1px solid rgba(56, 217, 255, 0.2);
+}
+.ia__punto-icono svg {
+  width: 20px; height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* --- Teléfono / ventana de chat --- */
+.ia__phone { position: relative; justify-self: center; width: min(100%, 370px); }
+
+.ia__phone-glow {
+  position: absolute;
+  inset: -12%;
+  z-index: -1;
+  background: radial-gradient(ellipse 60% 50% at 50% 55%, rgba(37, 99, 255, 0.2), transparent 70%);
+  filter: blur(26px);
+}
+
+.chat {
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: linear-gradient(170deg, rgba(15, 26, 56, 0.9), rgba(8, 14, 32, 0.94));
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(2, 6, 16, 0.7);
+}
+
+.chat__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(10, 18, 40, 0.65);
+}
+.chat__avatar {
+  width: 38px; height: 38px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--grad);
+  font-size: 1.05rem;
+}
+.chat__bar strong { font-family: var(--font-display); font-size: 0.95rem; display: block; line-height: 1.2; }
+.chat__bar small { color: var(--muted); font-size: 0.74rem; display: inline-flex; align-items: center; gap: 6px; }
+.chat__online {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #3ddc84;
+  box-shadow: 0 0 8px #3ddc84;
+}
+.chat__badge {
+  margin-left: auto;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  border: 1px solid rgba(56, 217, 255, 0.3);
+  background: rgba(56, 217, 255, 0.07);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+}
+
+.chat__mensajes {
+  height: 360px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.burbuja {
+  max-width: 82%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  animation: burbujaIn 0.35s ease both;
+}
+@keyframes burbujaIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+}
+
+/* Mensaje del cliente (izquierda) */
+.burbuja--cliente {
+  align-self: flex-start;
+  background: rgba(130, 175, 255, 0.1);
+  border: 1px solid var(--line);
+  border-bottom-left-radius: 4px;
+}
+
+/* Respuesta de la IA (derecha, azul de marca) */
+.burbuja--ia {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(31, 79, 216, 0.9), rgba(30, 143, 224, 0.85));
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 6px 22px rgba(37, 99, 255, 0.3);
+}
+
+.burbuja small {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.65rem;
+  opacity: 0.65;
+  text-align: right;
+}
+
+/* Indicador "escribiendo..." (tres puntitos) */
+.escribiendo {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 13px 16px;
+}
+.escribiendo span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+  animation: puntito 1s ease-in-out infinite;
+}
+.escribiendo span:nth-child(2) { animation-delay: 0.15s; }
+.escribiendo span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes puntito {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50%      { opacity: 1;   transform: translateY(-3px); }
+}
+
+
+/* ================================================================
+   08. PROCESO · timeline con línea luminosa
+   ================================================================ */
+.proceso {
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) 0;
+}
+.proceso .section-head { text-align: center; margin-inline: auto; }
+
+.proceso__timeline {
+  position: relative;
+  max-width: 760px;
+  margin-inline: auto;
+  display: grid;
+  gap: clamp(36px, 6vw, 56px);
+  padding-block: 10px;
+}
+
+/* Línea base + relleno luminoso (el alto lo anima main.js) */
+.proceso__line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 27px;             /* alineada con los números en mobile */
+  width: 2px;
+  background: rgba(130, 175, 255, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.proceso__line span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--cyan), var(--blue));
+  box-shadow: 0 0 16px rgba(56, 217, 255, 0.7);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.paso {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.paso__num {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--cyan);
+  background: var(--bg-soft);
+  border: 1px solid rgba(56, 217, 255, 0.35);
+  box-shadow: 0 0 24px rgba(56, 217, 255, 0.15);
+  position: relative;
+  z-index: 2;
+}
+
+.paso__body { padding-top: 6px; }
+.paso__title { font-size: 1.3rem; margin-bottom: 6px; }
+.paso__text { color: var(--muted); max-width: 46ch; }
+
+/* En desktop la timeline se centra y los pasos alternan lados */
+@media (min-width: 860px) {
+  .proceso__line { left: 50%; transform: translateX(-50%); }
+
+  .paso { width: 50%; }
+  .paso:nth-child(odd) {
+    margin-left: auto;
+    padding-left: 52px;
+  }
+  .paso:nth-child(even) {
+    flex-direction: row-reverse;
+    text-align: right;
+    padding-right: 52px;
+  }
+  .paso:nth-child(odd)  .paso__num { transform: translateX(-50%); margin-left: -52px; }
+  .paso:nth-child(even) .paso__num { transform: translateX(50%);  margin-right: -52px; }
+  .paso:nth-child(even) .paso__text { margin-left: auto; }
+}
+
+
+/* ================================================================
+   09. CTA FINAL
+   ================================================================ */
+.cta {
+  position: relative;
+  padding: clamp(100px, 14vw, 170px) 0;
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+
+.cta__glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(900px, 90vw);
+  height: 70%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(37, 99, 255, 0.16), rgba(56, 217, 255, 0.05) 50%, transparent 75%);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.cta__box {
+  position: relative;
+  text-align: center;
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.cta__title {
+  font-size: clamp(1.8rem, 4.4vw, 3.1rem);
+  margin-bottom: 40px;
+}
+
+.cta__note {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+
+/* ================================================================
+   10. FOOTER
+   ================================================================ */
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 36px 0;
+  background: var(--bg);
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.footer__nav { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer__nav a {
+  color: var(--muted);
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+.footer__nav a:hover { color: var(--ink); }
+
+.footer__copy { color: var(--muted); font-size: 0.85rem; }
+
+
+/* ================================================================
+   RESPONSIVE · SIMPLIFICAR MOBILE AQUÍ
+   ================================================================ */
+@media (max-width: 1100px) {
+  .servicios__grid { grid-template-columns: repeat(2, 1fr); }
+  /* La card de webs pasa a una sola columna (texto arriba, lista abajo) */
+  .card--web { grid-template-columns: 1fr; gap: 28px; }
+  .card--web .card__text { max-width: none; }
+}
+
+@media (max-width: 860px) {
+
+  /* --- Menú mobile: panel deslizante --- */
+  .header__toggle { display: flex; }
+
+  .header__nav {
+    position: fixed;
+    top: var(--header-h);
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 24px clamp(20px, 6vw, 32px) 32px;
+    /* Fondo sólido para que no se transparente el contenido detrás */
+    background: linear-gradient(180deg, #0a1228, #050a18);
+    box-shadow: 0 30px 60px rgba(2, 6, 16, 0.7);
+    border-bottom: 1px solid var(--line);
+    transform: translateY(-110%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+  }
+  .header__nav.is-open { transform: translateY(0); visibility: visible; }
+  .header__nav > a:not(.btn) {
+    padding: 14px 4px;
+    font-size: 1.05rem;
+    border-bottom: 1px solid rgba(130, 175, 255, 0.08);
+  }
+  .header__cta { justify-content: center; margin-top: 12px; }
+
+  /* --- Hero: texto centrado arriba, video debajo --- */
+  .hero { padding-bottom: 64px; }
+  .hero__inner { grid-template-columns: 1fr; text-align: center; }
+  .hero__copy { display: flex; flex-direction: column; align-items: center; }
+  .hero__text { max-width: 38ch; }
+  .hero__actions { justify-content: center; width: 100%; }
+  .hero__actions .btn { flex: 1 1 auto; justify-content: center; min-height: 54px; }
+  .hero__frame { width: min(84vw, 360px); animation: none; } /* sin flotación en mobile */
+
+  /* --- Despegue: textos centrados abajo del cohete --- */
+  .despegue--pin .despegue__rocket { height: min(62vh, 520px); margin-top: -9vh; }
+  .despegue--pin .despegue__step {
+    width: min(86vw, 420px);
+    top: auto;
+    bottom: 7vh;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%);
+    text-align: center !important;
+  }
+  .despegue--pin .despegue__step h3::after { margin-inline: auto; }
+  .despegue--pin .despegue__step p { margin-inline: auto; }
+
+  /* --- IA en acción: columna única, chat más bajo --- */
+  .ia__inner { grid-template-columns: 1fr; }
+  .chat__mensajes { height: 320px; }
+
+  /* CTA a lo ancho en mobile */
+  .cta .btn--lg { width: 100%; justify-content: center; }
+
+  .footer__inner { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 560px) {
+  .servicios__grid { grid-template-columns: 1fr; }
+}
+
+
+/* ================================================================
+   11. ACCESIBILIDAD · prefers-reduced-motion
+   Si el usuario pide menos movimiento, se apagan las animaciones
+   decorativas. GSAP también lo respeta desde main.js.
+   ================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero__frame { animation: none; }
+  .particle, .despegue__lines .line { display: none; }
+  .marquee__track { animation: none; }
+  .spotlight, #redNeuronal { display: none; }
+}
