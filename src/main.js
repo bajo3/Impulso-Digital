@@ -185,30 +185,66 @@ if (!reduceMotion && despegue) {
       const subidaCohete = celular ? '-9vh' : '-15vh';
       const escalaCohete = celular ? 1.03 : 1.07;
 
-      // Qué paso corresponde a cada momento del scroll:
-      // el primer 10% es para leer el encabezado, el resto se reparte
-      // entre los 6 textos. El último queda visible al salir.
-      let pasoActivo = -1;
-      function actualizarPaso(progreso) {
-        const idx =
-          progreso < 0.1
-            ? -1
-            : Math.min(pasos.length - 1, Math.floor(((progreso - 0.1) / 0.9) * pasos.length));
-        if (idx === pasoActivo) return;
+      // Entrada premium de un hito: aparece con fade + blur. En desktop
+      // además desliza desde su costado; en mobile (centrado) solo sube.
+      function revelarPaso(i) {
+        const paso = pasos[i];
+        const desdeIzq = paso.dataset.side === 'left';
+        const xDesde = celular ? 0 : desdeIzq ? -60 : 60;
+        gsap.fromTo(
+          paso,
+          { autoAlpha: 0, x: xDesde, y: 24, filter: 'blur(10px)' },
+          {
+            autoAlpha: 1, x: 0, y: 0, filter: 'blur(0px)',
+            duration: 0.6, ease: 'power3.out', overwrite: 'auto',
+          }
+        );
+        // El título se "decodifica" al aparecer (efecto IA)
+        decodificar(paso.querySelector('h3'), 500);
+      }
 
-        if (pasoActivo >= 0) {
-          gsap.to(pasos[pasoActivo], { autoAlpha: 0, y: -30, duration: 0.3, overwrite: 'auto' });
+      // DESKTOP: los textos se ACUMULAN (el cohete los va dejando en zigzag).
+      // MOBILE: uno por vez (acumularlos en pantalla chica queda amontonado).
+      let revelados = 0;   // desktop: cuántos hay visibles
+      let pasoActivo = -1;  // mobile: cuál se está mostrando
+      function actualizarPaso(progreso) {
+        if (celular) {
+          const idx =
+            progreso < 0.1
+              ? -1
+              : Math.min(pasos.length - 1, Math.floor(((progreso - 0.1) / 0.9) * pasos.length));
+          if (idx === pasoActivo) return;
+          if (pasoActivo >= 0) {
+            gsap.to(pasos[pasoActivo], { autoAlpha: 0, y: -30, duration: 0.3, overwrite: 'auto' });
+          }
+          if (idx >= 0) revelarPaso(idx);
+          pasoActivo = idx;
+          return;
         }
-        if (idx >= 0) {
-          gsap.fromTo(
-            pasos[idx],
-            { autoAlpha: 0, y: 40 },
-            { autoAlpha: 1, y: 0, duration: 0.45, overwrite: 'auto' }
-          );
-          // El título se "decodifica" al aparecer (efecto IA)
-          decodificar(pasos[idx].querySelector('h3'), 500);
+
+        // Cuántos hitos deberían estar visibles según el avance del scroll
+        const objetivo =
+          progreso < 0.1
+            ? 0
+            : Math.min(pasos.length, Math.ceil(((progreso - 0.1) / 0.9) * pasos.length));
+        if (objetivo === revelados) return;
+
+        if (objetivo > revelados) {
+          // Aparecen los nuevos (con un leve desfase si entran varios juntos)
+          for (let i = revelados; i < objetivo; i++) {
+            gsap.delayedCall((i - revelados) * 0.08, revelarPaso, [i]);
+          }
+        } else {
+          // Scroll hacia atrás: se "guardan" los de más arriba
+          for (let i = revelados - 1; i >= objetivo; i--) {
+            const desdeIzq = pasos[i].dataset.side === 'left';
+            gsap.to(pasos[i], {
+              autoAlpha: 0, x: desdeIzq ? -40 : 40, filter: 'blur(8px)',
+              duration: 0.3, overwrite: 'auto',
+            });
+          }
         }
-        pasoActivo = idx;
+        revelados = objetivo;
       }
 
       /* --- VIDEO SCRUBBING: el scroll controla el tiempo del video ---
@@ -253,6 +289,51 @@ if (!reduceMotion && despegue) {
       }
       gsap.ticker.add(scrubVideo);
 
+      /* --- ESTELA DE HUMO: el cohete va soltando puffs que se desvanecen ---
+         Marcan todo el recorrido del lanzamiento. Se emiten en función del
+         avance del scroll (no del tiempo) y solo mientras el cohete sube. */
+      const smoke = $('#despegueSmoke');
+      const humoCada = celular ? 0.018 : 0.011;        // cada cuánto progreso suelta un puff
+      const humoTam = celular ? [22, 46] : [38, 76];   // rango de tamaño (px)
+      let humoUltimo = 0;
+      function emitirHumo(progreso) {
+        if (!smoke || progreso < 0.1) return;
+        // throttle: suelta un puff cada vez que el cohete se movió lo
+        // suficiente. Usamos valor absoluto para que funcione aunque el
+        // scroll sea no-monótono (entrar desde una posición avanzada,
+        // restauración de scroll al recargar, o scrollear de ida y vuelta).
+        if (Math.abs(progreso - humoUltimo) < humoCada) return;
+        humoUltimo = progreso;
+        const r = rocket.getBoundingClientRect();
+        const s = stage.getBoundingClientRect();
+        const x = r.left + r.width / 2 - s.left;
+        const y = r.top + r.height * 0.8 - s.top;       // a la altura de la cola
+        const puff = document.createElement('span');
+        // ~45% de los puffs llevan núcleo cálido (fuego de la cola)
+        const fuego = Math.random() < 0.45;
+        puff.className = fuego ? 'smoke smoke--fuego' : 'smoke';
+        // los de fuego un poco más chicos (chispa); los de humo más grandes
+        const [tMin, tMax] = fuego ? [humoTam[0] * 0.6, humoTam[1] * 0.7] : humoTam;
+        const tam = tMin + Math.random() * (tMax - tMin);
+        puff.style.left = `${x + (Math.random() * 30 - 15)}px`;
+        puff.style.top = `${y}px`;
+        puff.style.setProperty('--s', `${tam}px`);
+        smoke.appendChild(puff);
+        gsap.fromTo(
+          puff,
+          { scale: 0.5, autoAlpha: fuego ? 0.85 : 0.72 },
+          {
+            scale: fuego ? 1.4 : 2,
+            autoAlpha: 0,
+            x: Math.random() * 44 - 22,
+            y: 70 + Math.random() * 50,
+            duration: fuego ? 1.2 : 1.8,
+            ease: 'power1.out',
+            onComplete: () => puff.remove(),
+          }
+        );
+      }
+
       const tl = gsap.timeline({
         defaults: { ease: 'power2.out' },
         scrollTrigger: {
@@ -265,6 +346,7 @@ if (!reduceMotion && despegue) {
           anticipatePin: 1,
           onUpdate: (self) => {
             actualizarPaso(self.progress);
+            emitirHumo(self.progress);
             // El progreso del scroll (0 a 1) se mapea al tiempo del video
             if (video && video.duration) {
               tiempoObjetivo = self.progress * (video.duration - 0.05);
@@ -303,6 +385,11 @@ if (!reduceMotion && despegue) {
       return () => {
         gsap.ticker.remove(scrubVideo);
         despegue.classList.remove('despegue--active');
+        // Limpia el humo acumulado al cambiar de breakpoint
+        if (smoke) {
+          gsap.killTweensOf(smoke.children);
+          smoke.innerHTML = '';
+        }
       };
     }
   );

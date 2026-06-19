@@ -600,22 +600,61 @@ body::after {
 }
 .despegue__step p { color: var(--muted); max-width: 30ch; }
 
-/* Con el pin activo (clase que agrega main.js): textos flotando
-   a los costados del cohete, uno por vez */
+/* Con el pin activo (clase que agrega main.js): el cohete va DEJANDO
+   los textos a su paso. Quedan fijos a los costados, en zigzag, y se
+   acumulan: al final del scroll se ven los 6 hitos del recorrido. */
 .despegue--pin .despegue__stage { flex-direction: row; }
 .despegue--pin .despegue__steps { position: static; padding: 0; }
 .despegue--pin .despegue__step {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: min(34vw, 330px);
-  opacity: 0;             /* GSAP las muestra una por una */
+  /* Posición vertical de cada hito (el cohete los suelta de a uno).
+     CAMBIAR DISTRIBUCIÓN AQUÍ: cada nth-of-type = un escalón. */
+  top: var(--row, 50%);
+  width: min(30vw, 320px);
+  opacity: 0;             /* GSAP las revela a medida que el cohete sube */
   visibility: hidden;
 }
-.despegue--pin .despegue__step[data-side="left"]  { left: clamp(24px, 8vw, 120px); }
-.despegue--pin .despegue__step[data-side="right"] { right: clamp(24px, 8vw, 120px); text-align: right; }
+/* Escalonado vertical (top del recuadro) para que no se solapen */
+.despegue--pin .despegue__step:nth-of-type(1) { --row: 13%; }
+.despegue--pin .despegue__step:nth-of-type(2) { --row: 27%; }
+.despegue--pin .despegue__step:nth-of-type(3) { --row: 41%; }
+.despegue--pin .despegue__step:nth-of-type(4) { --row: 55%; }
+.despegue--pin .despegue__step:nth-of-type(5) { --row: 69%; }
+.despegue--pin .despegue__step:nth-of-type(6) { --row: 83%; }
+.despegue--pin .despegue__step[data-side="left"]  { left: clamp(24px, 7vw, 110px); }
+.despegue--pin .despegue__step[data-side="right"] { right: clamp(24px, 7vw, 110px); text-align: right; }
 .despegue--pin .despegue__step[data-side="right"] h3::after { margin-left: auto; }
 .despegue--pin .despegue__step[data-side="right"] p { margin-left: auto; }
+
+/* Estela de humo/partículas que el cohete va dejando (puffs los crea
+   main.js y los anima desvaneciéndose). */
+/* z-index 5: por encima del cohete (z-index 4) para que la estela se vea
+   alrededor y debajo de él; queda por debajo de los textos (también z 5
+   pero posteriores en el DOM). */
+.despegue__smoke { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.despegue__smoke .smoke {
+  position: absolute;
+  width: var(--s); height: var(--s);
+  margin-left: calc(var(--s) / -2);
+  margin-top: calc(var(--s) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(210, 235, 255, 0.85),
+    rgba(56, 217, 255, 0.40) 40%,
+    rgba(37, 99, 255, 0.16) 65%,
+    transparent 75%);
+  filter: blur(7px);
+  will-change: transform, opacity;
+}
+/* Los primeros puffs (recién salidos de la cola) tienen un núcleo cálido,
+   como el fuego del cohete. main.js les pone la clase .smoke--fuego. */
+.despegue__smoke .smoke--fuego {
+  background: radial-gradient(circle,
+    rgba(255, 214, 170, 0.9),
+    rgba(255, 138, 76, 0.5) 38%,
+    rgba(56, 217, 255, 0.22) 64%,
+    transparent 76%);
+}
 
 
 /* ================================================================
@@ -1190,15 +1229,19 @@ body::after {
   .hero__actions .btn { flex: 1 1 auto; justify-content: center; min-height: 54px; }
   .hero__frame { width: min(84vw, 360px); animation: none; } /* sin flotación en mobile */
 
-  /* --- Despegue: textos centrados abajo del cohete --- */
+  /* --- Despegue: en mobile, un texto por vez, centrado abajo del cohete
+     (acumularlos en pantalla chica queda amontonado). El escalonado
+     vertical de desktop (--row) se anula con top:auto. --- */
   .despegue--pin .despegue__rocket { height: min(62vh, 520px); margin-top: -9vh; }
   .despegue--pin .despegue__step {
     width: min(86vw, 420px);
     top: auto;
     bottom: 7vh;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%);
+    /* centrado con márgenes automáticos: no usa translateX(-50%), así
+       las animaciones de GSAP (que escriben transform) no lo descentran */
+    left: 0 !important;
+    right: 0 !important;
+    margin-inline: auto;
     text-align: center !important;
   }
   .despegue--pin .despegue__step h3::after { margin-inline: auto; }

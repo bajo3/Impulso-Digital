@@ -6,3 +6,5 @@ dist
 # Videos fuente / backups (no se usan en la web)
 public/videos/Cinematic_video_second.mp4
 public/videos/cohete-impulso-hero-original.mp4
+
+.vercel
