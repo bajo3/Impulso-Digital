@@ -7,16 +7,31 @@
   <!-- ============================================================
        SEO / METADATOS
        CAMBIAR AQUÍ: título de la pestaña y descripción para Google
+       IMPORTANTE: cuando tengas dominio propio, reemplazá
+       https://impulso-digital.vercel.app por tu dominio en TODAS
+       las URLs de abajo (canonical, og:url, og:image, twitter, y
+       el bloque JSON-LD al final del <head>).
        ============================================================ -->
   <title>Impulso Digital | Creación de Webs y Marketing con IA</title>
   <meta name="description" content="Creamos webs profesionales que venden y las potenciamos con Meta Ads, Google Ads, chatbots y CRM. Tu sistema digital completo, en un solo lugar. Tandil." />
   <meta name="theme-color" content="#050a18" />
+  <link rel="canonical" href="https://impulso-digital.vercel.app/" />
 
-  <!-- Open Graph (vista previa al compartir el link) -->
+  <!-- Open Graph (vista previa al compartir el link en WhatsApp/Facebook).
+       og:image DEBE ser una URL absoluta o no se ve la imagen. -->
   <meta property="og:title" content="Impulso Digital | Creación de Webs y Marketing con IA" />
   <meta property="og:description" content="Webs que venden, campañas en Meta y Google Ads, chatbots y CRM. Tu sistema digital completo." />
-  <meta property="og:image" content="/images/hero-poster.jpg" />
+  <meta property="og:image" content="https://impulso-digital.vercel.app/images/hero-poster.jpg" />
+  <meta property="og:url" content="https://impulso-digital.vercel.app/" />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Impulso Digital" />
+  <meta property="og:locale" content="es_AR" />
+
+  <!-- Twitter / X (vista previa al compartir) -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Impulso Digital | Creación de Webs y Marketing con IA" />
+  <meta name="twitter:description" content="Webs que venden, campañas en Meta y Google Ads, chatbots y CRM. Tu sistema digital completo." />
+  <meta name="twitter:image" content="https://impulso-digital.vercel.app/images/hero-poster.jpg" />
 
   <!-- Favicon (cohete). CAMBIAR AQUÍ si querés usar un .ico propio -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
@@ -28,6 +43,72 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="/src/styles.css" />
+
+  <!-- ============================================================
+       DATOS ESTRUCTURADOS (JSON-LD)
+       Le dice a Google que sos un negocio local de Tandil. Habilita
+       el panel lateral, mapa y mejora el SEO local.
+       CAMBIAR AQUÍ: teléfono, redes sociales (sameAs), horario,
+       dirección exacta si la querés mostrar, y las preguntas del FAQ.
+       ============================================================ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Impulso Digital",
+    "description": "Agencia de marketing digital en Tandil. Creación de webs profesionales, Meta Ads, Google Ads, chatbots con IA, CRM y automatización.",
+    "url": "https://impulso-digital.vercel.app/",
+    "image": "https://impulso-digital.vercel.app/images/hero-poster.jpg",
+    "telephone": "+5492494601118",
+    "priceRange": "$$",
+    "areaServed": { "@type": "City", "name": "Tandil" },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Tandil",
+      "addressRegion": "Buenos Aires",
+      "addressCountry": "AR"
+    },
+    "sameAs": [],
+    "knowsAbout": ["Creación de webs", "Meta Ads", "Google Ads", "Chatbots con IA", "CRM", "Automatización", "SEO local"]
+  }
+  </script>
+
+  <!-- Preguntas frecuentes: ayuda a aparecer en Google con el
+       desplegable de FAQ. Mantené estas preguntas/respuestas iguales
+       a las de la sección #faq del cuerpo. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cuánto cuesta una web?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Cada proyecto es a medida, así que el precio depende de lo que necesites (web institucional, tienda online o landing). Te pasamos un presupuesto claro y sin sorpresas después de una primera charla gratis por WhatsApp." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto tarda en estar lista?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Una landing page puede estar lista en 1 a 2 semanas; una web institucional o tienda online, entre 3 y 5 semanas según el contenido. Trabajamos con etapas claras para que veas el avance." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿La puedo actualizar yo mismo?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. Entregamos webs autogestionables y te enseñamos a cargar productos, cambiar textos e imágenes sin depender de nadie. Y si preferís delegarlo, también ofrecemos mantenimiento." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿También manejan la publicidad?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. Además de la web, hacemos campañas en Meta Ads (Instagram y Facebook) y Google Ads, con seguimiento y reportes para que sepas exactamente en qué se invierte cada peso." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Trabajan solo en Tandil?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Estamos en Tandil pero trabajamos con clientes de todo el país de forma 100% online. La distancia no es un problema: coordinamos todo por WhatsApp y videollamada." }
+      }
+    ]
+  }
+  </script>
 
   <!-- Marca el documento como "con JS" para que las animaciones
        de entrada no oculten contenido si JS falla -->
@@ -171,73 +252,69 @@
     </div>
 
     <!-- ============================================================
-         3. SECCIÓN "DESPEGUE DIGITAL" (scroll largo + pin con GSAP)
-         CAMBIAR TEXTOS AQUÍ: los 6 pasos están en .despegue__step
-         AJUSTAR VELOCIDAD DEL SCROLL: en src/main.js, CONFIG.despegueScroll
+         3. SECCIÓN "DESPEGUE DIGITAL"
+         Video de fondo en loop (generado con IA/Seedance, ver prompt
+         en README.md) + 3 pilares de lo que de verdad vendemos.
+         CAMBIAR VIDEO AQUÍ: public/videos/despegue-bg.mp4
+         CAMBIAR TEXTOS: los 3 bloques .despegue__pillar
          ============================================================ -->
     <section class="despegue" id="despegue">
-      <!-- Este contenedor queda "pineado" (fijo) mientras se scrollea -->
-      <div class="despegue__stage" id="despegueStage">
 
-        <header class="despegue__head">
-          <h2 class="despegue__title">Despegue digital</h2>
-          <p class="despegue__sub">Así impulsamos tu negocio, paso a paso.</p>
+      <!-- Fondo: video en loop con velo oscuro para que el texto se lea.
+           Mientras no exista el video, queda el poster (imagen) de fondo. -->
+      <div class="despegue__media" aria-hidden="true">
+        <video class="despegue__bgvideo" id="despegueBgVideo"
+               autoplay muted loop playsinline preload="metadata"
+               poster="/images/despegue-poster.jpg">
+          <source src="/videos/despegue-bg.mp4" type="video/mp4" />
+        </video>
+        <div class="despegue__veil"></div>
+      </div>
+
+      <!-- Cohete chico: flota subiendo y bajando, solo decorativo,
+           visible únicamente dentro de esta sección. -->
+      <div class="despegue__mini-rocket" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2.5c2.5 2 4 5.3 4 9.2 0 2.6-.7 4.7-1.4 6.1l-2.6 1.7-2.6-1.7c-.7-1.4-1.4-3.5-1.4-6.1 0-3.9 1.5-7.2 4-9.2z"/>
+          <circle cx="12" cy="10.3" r="1.6"/>
+          <path d="M8 14.3c-1.6.5-2.5 1.8-2.7 4.1.9-.2 2.2-.7 3-1.5"/>
+          <path d="M16 14.3c1.6.5 2.5 1.8 2.7 4.1-.9-.2-2.2-.7-3-1.5"/>
+          <path d="M10.4 19.4l1.6 2 1.6-2"/>
+        </svg>
+      </div>
+
+      <div class="container despegue__inner">
+        <header class="section-head despegue__head" data-reveal>
+          <p class="section-eyebrow">Despegue digital</p>
+          <h2 class="section-title">Así impulsamos tu negocio</h2>
+          <p class="section-text">Tu web, tu automatización y tu CRM, funcionando como un solo sistema.</p>
         </header>
 
-        <!-- Cohete SINCRONIZADO con el scroll (video scrubbing):
-             este video está recortado a la zona del cohete y codificado
-             con todos los frames clave; main.js mueve su currentTime
-             según el progreso del scroll. Si cambiás el video, regenerá
-             la versión "scrub" (ver instrucciones en el README o pedirlo). -->
-        <!-- Por defecto usamos el cohete SIN FONDO (webm con canal alfa).
-             La clase sin-fondo quita la máscara. main.js solo cambia a la
-             versión con fondo (mp4 + máscara) si el navegador es Safari o
-             si el webm falla al cargar. Sin poster para que no haya ningún
-             "recuadro" con fondo mientras carga. -->
-        <div class="despegue__rocket sin-fondo" id="despegueRocket">
-          <div class="despegue__crop">
-            <video class="despegue__video" id="despegueVideo"
-                   src="/videos/cohete-alpha.webm"
-                   muted playsinline preload="auto"></video>
-          </div>
-          <!-- Estela luminosa azul/cyan -->
-          <div class="despegue__trail" id="despegueTrail" aria-hidden="true"></div>
+        <div class="despegue__pillars">
+          <article class="despegue__pillar" data-reveal>
+            <div class="despegue__pillar-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M6 6.5h.01"/><path d="M8.5 6.5h.01"/></svg>
+            </div>
+            <h3>Webs que venden</h3>
+            <p>Tu sitio a medida, rápido y diseñado para convertir visitas en clientes.</p>
+          </article>
+
+          <article class="despegue__pillar" data-reveal>
+            <div class="despegue__pillar-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 4l1.8 5.2L19 11l-5.2 1.8L12 18l-1.8-5.2L5 11l5.2-1.8z"/><path d="M18.5 16.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg>
+            </div>
+            <h3>Automatización con IA</h3>
+            <p>Respuestas, turnos y seguimientos que se hacen solos, las 24 horas.</p>
+          </article>
+
+          <article class="despegue__pillar" data-reveal>
+            <div class="despegue__pillar-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="3.5"/><path d="M20 21v-2a3.5 3.5 0 0 0-3-3.4"/><path d="M4 21v-2a3.5 3.5 0 0 1 3-3.4"/></svg>
+            </div>
+            <h3>CRM y seguimiento</h3>
+            <p>Cada contacto ordenado y cada venta con seguimiento real, sin perder a nadie.</p>
+          </article>
         </div>
-
-        <!-- Líneas de velocidad + partículas digitales -->
-        <div class="despegue__lines" id="despegueLines" aria-hidden="true"></div>
-        <div class="despegue__particles" id="despegueParticles" aria-hidden="true"></div>
-        <!-- Estela de humo: el cohete va dejando puffs que se desvanecen (main.js) -->
-        <div class="despegue__smoke" id="despegueSmoke" aria-hidden="true"></div>
-
-        <!-- Textos progresivos. CAMBIAR TEXTOS AQUÍ -->
-        <ul class="despegue__steps" id="despegueSteps">
-          <li class="despegue__step" data-side="left">
-            <h3>Diagnóstico digital</h3>
-            <p>Analizamos tu presencia y detectamos oportunidades.</p>
-          </li>
-          <li class="despegue__step" data-side="right">
-            <h3>Estrategia con IA</h3>
-            <p>Un plan claro, potenciado con inteligencia artificial.</p>
-          </li>
-          <li class="despegue__step" data-side="left">
-            <h3>Tu web profesional</h3>
-            <p>El centro de tu negocio, lista para vender.</p>
-          </li>
-          <li class="despegue__step" data-side="right">
-            <h3>Meta y Google Ads</h3>
-            <p>Tráfico real hacia tu web, cada peso cuidado.</p>
-          </li>
-          <li class="despegue__step" data-side="left">
-            <h3>Automatización</h3>
-            <p>Sistemas que trabajan por tu negocio 24/7.</p>
-          </li>
-          <li class="despegue__step" data-side="right">
-            <h3>Crecimiento medible</h3>
-            <p>Datos reales para decidir y escalar.</p>
-          </li>
-        </ul>
-
       </div>
     </section>
 
@@ -486,6 +563,87 @@
     </section>
 
     <!-- ============================================================
+         5B. PREGUNTAS FRECUENTES (FAQ)
+         Mata las dudas que frenan la decisión y suma SEO.
+         CAMBIAR TEXTOS AQUÍ: cada <details> es una pregunta.
+         IMPORTANTE: si cambiás una pregunta/respuesta, actualizá
+         también el bloque JSON-LD "FAQPage" en el <head>.
+         ============================================================ -->
+    <section class="faq" id="faq">
+      <div class="container">
+
+        <header class="section-head" data-reveal>
+          <p class="section-eyebrow">Preguntas frecuentes</p>
+          <h2 class="section-title">Todo lo que querés saber<br />antes de empezar</h2>
+        </header>
+
+        <div class="faq__list" data-reveal>
+
+          <details class="faq__item">
+            <summary>
+              ¿Cuánto cuesta una web?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              <p>Cada proyecto es a medida, así que el precio depende de lo que necesites
+              (web institucional, tienda online o landing). Te pasamos un presupuesto
+              claro y sin sorpresas después de una primera charla gratis por WhatsApp.</p>
+            </div>
+          </details>
+
+          <details class="faq__item">
+            <summary>
+              ¿Cuánto tarda en estar lista?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              <p>Una landing page puede estar lista en 1 a 2 semanas; una web institucional
+              o tienda online, entre 3 y 5 semanas según el contenido. Trabajamos con
+              etapas claras para que veas el avance.</p>
+            </div>
+          </details>
+
+          <details class="faq__item">
+            <summary>
+              ¿La puedo actualizar yo mismo?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              <p>Sí. Entregamos webs autogestionables y te enseñamos a cargar productos,
+              cambiar textos e imágenes sin depender de nadie. Y si preferís delegarlo,
+              también ofrecemos mantenimiento.</p>
+            </div>
+          </details>
+
+          <details class="faq__item">
+            <summary>
+              ¿También manejan la publicidad?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              <p>Sí. Además de la web, hacemos campañas en Meta Ads (Instagram y Facebook)
+              y Google Ads, con seguimiento y reportes para que sepas exactamente en qué
+              se invierte cada peso.</p>
+            </div>
+          </details>
+
+          <details class="faq__item">
+            <summary>
+              ¿Trabajan solo en Tandil?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              <p>Estamos en Tandil pero trabajamos con clientes de todo el país de forma
+              100% online. La distancia no es un problema: coordinamos todo por WhatsApp
+              y videollamada.</p>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
          6. CTA FINAL
          CAMBIAR TEXTOS AQUÍ y CAMBIAR WHATSAPP AQUÍ
          ============================================================ -->
@@ -526,6 +684,17 @@
       <p class="footer__copy">© 2026 Impulso Digital. Marketing con IA.</p>
     </div>
   </footer>
+
+  <!-- ============================================================
+       BOTÓN FLOTANTE DE WHATSAPP
+       Siempre a un toque, sobre todo en mobile. Aparece al scrollear
+       (lo activa main.js, sección 14). CAMBIAR WHATSAPP AQUÍ.
+       ============================================================ -->
+  <a class="wa-float" id="waFloat"
+     href="https://wa.me/5492494601118?text=Hola,%20quiero%20impulsar%20mi%20negocio%20con%20Impulso%20Digital"
+     target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.02ZM12.04 20.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.23-8.23 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43-.14-.01-.31-.01-.48-.01a.92.92 0 0 0-.66.31c-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+  </a>
 
   <script type="module" src="/src/main.js"></script>
 </body>

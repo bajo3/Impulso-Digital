@@ -2,15 +2,20 @@
    IMPULSO DIGITAL · INTERACCIÓN Y ANIMACIONES (GSAP + ScrollTrigger)
    ----------------------------------------------------------------
    ÍNDICE
-   00. CONFIG (CAMBIAR AQUÍ: WhatsApp, velocidad del scroll, partículas)
+   00. CONFIG (CAMBIAR AQUÍ: WhatsApp, nodos de la red neuronal)
    01. Setup y accesibilidad (prefers-reduced-motion)
    02. Header: estado al scrollear + menú mobile
-   03. Hero: animación de entrada + partículas + parallax
-   04. Despegue digital: sección pineada con scroll
-   05. Revelado genérico de secciones (data-reveal)
-   06. Servicios: hover 3D de las cards
-   07. Proceso: línea luminosa de la timeline
-   08. Gestión de los videos (play/pausa según visibilidad)
+   03. Hero: animación de entrada + parallax
+   04. Revelado genérico de secciones (data-reveal)
+   05. Servicios: hover 3D de las cards
+   06. Proceso: línea luminosa de la timeline
+   07. Gestión de los videos (play/pausa según visibilidad)
+   08. Red neuronal de fondo (canvas)
+   09. Chat IA que se escribe sola
+   10. Texto "decodificado" (efecto scramble IA)
+   11. Spotlight: luz que sigue al cursor
+   12. Botones magnéticos
+   13. Botón flotante de WhatsApp
    ================================================================ */
 
 import gsap from 'gsap';
@@ -27,16 +32,6 @@ const CONFIG = {
   // este se usa por si querés generar links dinámicos en el futuro)
   whatsappURL:
     'https://wa.me/5492494601118?text=Hola,%20quiero%20impulsar%20mi%20negocio%20con%20Impulso%20Digital',
-
-  // AJUSTAR VELOCIDAD DEL SCROLL DEL DESPEGUE AQUÍ:
-  // 3 = la sección dura 3 pantallas de scroll (300vh), 4 = más lenta (400vh)
-  despegueScroll: 3,
-
-  // Cantidad de partículas (menos = más rendimiento)
-  // SIMPLIFICAR MOBILE AQUÍ: bajá estos números si hace falta
-  particulasDespegue: 16,
-  lineasVelocidadDesktop: 12,
-  lineasVelocidadMobile: 5,
 
   // Red neuronal de fondo (nodos del canvas)
   nodosRedDesktop: 60,
@@ -87,23 +82,8 @@ nav.querySelectorAll('a').forEach((link) =>
 
 
 /* ================================================================
-   03. HERO · entrada suave + partículas + parallax
+   03. HERO · entrada suave + parallax
    ================================================================ */
-
-// --- Partículas flotantes (puntos cyan que suben) ---
-function crearParticulas(contenedor, cantidad) {
-  if (!contenedor || reduceMotion) return;
-  for (let i = 0; i < cantidad; i++) {
-    const p = document.createElement('span');
-    p.className = 'particle';
-    p.style.setProperty('--x', `${Math.random() * 100}%`);
-    p.style.setProperty('--s', `${1 + Math.random() * 2.5}px`);
-    p.style.setProperty('--d', `${9 + Math.random() * 14}s`);
-    p.style.setProperty('--delay', `${Math.random() * -20}s`);
-    p.style.setProperty('--o', `${0.25 + Math.random() * 0.45}`);
-    contenedor.appendChild(p);
-  }
-}
 
 // --- Entrada del hero (stagger en eyebrow, título, texto, botones, video) ---
 if (!reduceMotion) {
@@ -136,268 +116,7 @@ if (!reduceMotion) {
 
 
 /* ================================================================
-   04. DESPEGUE DIGITAL · sección pineada
-   El usuario scrollea CONFIG.despegueScroll pantallas mientras el
-   cohete sube, crece la estela y aparecen los 6 textos.
-   AJUSTAR VELOCIDAD: CONFIG.despegueScroll (arriba de todo)
-   ================================================================ */
-const despegue = $('.despegue');
-const stage = $('#despegueStage');
-
-// Líneas de velocidad (rayitas verticales que caen = sensación de subida)
-function crearLineas(contenedor, cantidad) {
-  if (!contenedor || reduceMotion) return;
-  for (let i = 0; i < cantidad; i++) {
-    const l = document.createElement('span');
-    l.className = 'line';
-    l.style.setProperty('--x', `${Math.random() * 100}%`);
-    l.style.setProperty('--h', `${30 + Math.random() * 90}px`);
-    l.style.setProperty('--d', `${1.4 + Math.random() * 2.2}s`);
-    l.style.setProperty('--delay', `${Math.random() * -4}s`);
-    contenedor.appendChild(l);
-  }
-}
-
-if (!reduceMotion && despegue) {
-  // Activa el layout "pineado" (textos a los costados, ver styles.css)
-  despegue.classList.add('despegue--pin');
-
-  crearLineas(
-    $('#despegueLines'),
-    esMobile() ? CONFIG.lineasVelocidadMobile : CONFIG.lineasVelocidadDesktop
-  );
-  crearParticulas($('#despegueParticles'), CONFIG.particulasDespegue);
-
-  const pasos = $$('.despegue__step');
-
-  // gsap.matchMedia permite animaciones distintas en desktop y mobile
-  const mm = gsap.matchMedia();
-
-  mm.add(
-    {
-      escritorio: '(min-width: 861px)',
-      celular: '(max-width: 860px)',
-    },
-    (ctx) => {
-      const { celular } = ctx.conditions;
-
-      // SIMPLIFICAR MOBILE AQUÍ: en celular el cohete se mueve menos
-      const subidaCohete = celular ? '-9vh' : '-15vh';
-      const escalaCohete = celular ? 1.03 : 1.07;
-
-      // Entrada premium de un hito: aparece con fade + blur. En desktop
-      // además desliza desde su costado; en mobile (centrado) solo sube.
-      function revelarPaso(i) {
-        const paso = pasos[i];
-        const desdeIzq = paso.dataset.side === 'left';
-        const xDesde = celular ? 0 : desdeIzq ? -60 : 60;
-        gsap.fromTo(
-          paso,
-          { autoAlpha: 0, x: xDesde, y: 24, filter: 'blur(10px)' },
-          {
-            autoAlpha: 1, x: 0, y: 0, filter: 'blur(0px)',
-            duration: 0.6, ease: 'power3.out', overwrite: 'auto',
-          }
-        );
-        // El título se "decodifica" al aparecer (efecto IA)
-        decodificar(paso.querySelector('h3'), 500);
-      }
-
-      // DESKTOP: los textos se ACUMULAN (el cohete los va dejando en zigzag).
-      // MOBILE: uno por vez (acumularlos en pantalla chica queda amontonado).
-      let revelados = 0;   // desktop: cuántos hay visibles
-      let pasoActivo = -1;  // mobile: cuál se está mostrando
-      function actualizarPaso(progreso) {
-        if (celular) {
-          const idx =
-            progreso < 0.1
-              ? -1
-              : Math.min(pasos.length - 1, Math.floor(((progreso - 0.1) / 0.9) * pasos.length));
-          if (idx === pasoActivo) return;
-          if (pasoActivo >= 0) {
-            gsap.to(pasos[pasoActivo], { autoAlpha: 0, y: -30, duration: 0.3, overwrite: 'auto' });
-          }
-          if (idx >= 0) revelarPaso(idx);
-          pasoActivo = idx;
-          return;
-        }
-
-        // Cuántos hitos deberían estar visibles según el avance del scroll
-        const objetivo =
-          progreso < 0.1
-            ? 0
-            : Math.min(pasos.length, Math.ceil(((progreso - 0.1) / 0.9) * pasos.length));
-        if (objetivo === revelados) return;
-
-        if (objetivo > revelados) {
-          // Aparecen los nuevos (con un leve desfase si entran varios juntos)
-          for (let i = revelados; i < objetivo; i++) {
-            gsap.delayedCall((i - revelados) * 0.08, revelarPaso, [i]);
-          }
-        } else {
-          // Scroll hacia atrás: se "guardan" los de más arriba
-          for (let i = revelados - 1; i >= objetivo; i--) {
-            const desdeIzq = pasos[i].dataset.side === 'left';
-            gsap.to(pasos[i], {
-              autoAlpha: 0, x: desdeIzq ? -40 : 40, filter: 'blur(8px)',
-              duration: 0.3, overwrite: 'auto',
-            });
-          }
-        }
-        revelados = objetivo;
-      }
-
-      /* --- VIDEO SCRUBBING: el scroll controla el tiempo del video ---
-         El cohete despega exactamente al ritmo del usuario: si frena el
-         scroll, el cohete se congela; si vuelve atrás, retrocede. */
-      const video = $('#despegueVideo');
-
-      /* Cohete SIN FONDO (transparencia real): si el navegador soporta
-         WebM VP9 con canal alfa (Chrome, Edge, Firefox), usamos la
-         versión recortada con IA. Safari/iOS ignora el alfa, así que
-         se queda con el mp4 + máscara difuminada (fallback). */
-      const esSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-      const rocket = $('#despegueRocket');
-      // El webm transparente ya es el src por defecto (ver index.html).
-      // Solo cambiamos a la versión con fondo (mp4 + máscara) si:
-      //  - es Safari (no soporta el canal alfa del webm), o
-      //  - el webm falla al cargar por cualquier motivo.
-      function usarFallbackConFondo() {
-        if (video.currentSrc.includes('cohete-impulso-scrub')) return;
-        rocket.classList.remove('sin-fondo');
-        video.src = '/videos/cohete-impulso-scrub.mp4';
-        video.load();
-      }
-      if (video) {
-        if (esSafari) {
-          usarFallbackConFondo();
-        } else {
-          video.addEventListener('error', usarFallbackConFondo, { once: true });
-        }
-      }
-      let tiempoObjetivo = 0;
-      let tiempoSuave = 0;
-
-      // Lerp en cada frame para que el movimiento sea fluido y no "a saltos"
-      function scrubVideo() {
-        if (!video || !video.duration) return;
-        tiempoSuave += (tiempoObjetivo - tiempoSuave) * 0.14;
-        // Solo escribe currentTime si el cambio supera ~1 frame (rendimiento)
-        if (Math.abs(video.currentTime - tiempoSuave) > 0.034) {
-          video.currentTime = tiempoSuave;
-        }
-      }
-      gsap.ticker.add(scrubVideo);
-
-      /* --- ESTELA DE HUMO: el cohete va soltando puffs que se desvanecen ---
-         Marcan todo el recorrido del lanzamiento. Se emiten en función del
-         avance del scroll (no del tiempo) y solo mientras el cohete sube. */
-      const smoke = $('#despegueSmoke');
-      const humoCada = celular ? 0.018 : 0.011;        // cada cuánto progreso suelta un puff
-      const humoTam = celular ? [22, 46] : [38, 76];   // rango de tamaño (px)
-      let humoUltimo = 0;
-      function emitirHumo(progreso) {
-        if (!smoke || progreso < 0.1) return;
-        // throttle: suelta un puff cada vez que el cohete se movió lo
-        // suficiente. Usamos valor absoluto para que funcione aunque el
-        // scroll sea no-monótono (entrar desde una posición avanzada,
-        // restauración de scroll al recargar, o scrollear de ida y vuelta).
-        if (Math.abs(progreso - humoUltimo) < humoCada) return;
-        humoUltimo = progreso;
-        const r = rocket.getBoundingClientRect();
-        const s = stage.getBoundingClientRect();
-        const x = r.left + r.width / 2 - s.left;
-        const y = r.top + r.height * 0.8 - s.top;       // a la altura de la cola
-        const puff = document.createElement('span');
-        // ~45% de los puffs llevan núcleo cálido (fuego de la cola)
-        const fuego = Math.random() < 0.45;
-        puff.className = fuego ? 'smoke smoke--fuego' : 'smoke';
-        // los de fuego un poco más chicos (chispa); los de humo más grandes
-        const [tMin, tMax] = fuego ? [humoTam[0] * 0.6, humoTam[1] * 0.7] : humoTam;
-        const tam = tMin + Math.random() * (tMax - tMin);
-        puff.style.left = `${x + (Math.random() * 30 - 15)}px`;
-        puff.style.top = `${y}px`;
-        puff.style.setProperty('--s', `${tam}px`);
-        smoke.appendChild(puff);
-        gsap.fromTo(
-          puff,
-          { scale: 0.5, autoAlpha: fuego ? 0.85 : 0.72 },
-          {
-            scale: fuego ? 1.4 : 2,
-            autoAlpha: 0,
-            x: Math.random() * 44 - 22,
-            y: 70 + Math.random() * 50,
-            duration: fuego ? 1.2 : 1.8,
-            ease: 'power1.out',
-            onComplete: () => puff.remove(),
-          }
-        );
-      }
-
-      const tl = gsap.timeline({
-        defaults: { ease: 'power2.out' },
-        scrollTrigger: {
-          trigger: despegue,
-          start: 'top top',
-          // Largo del pin: 3 => 300vh de scroll. CAMBIAR EN CONFIG.
-          end: `+=${CONFIG.despegueScroll * 100}%`,
-          scrub: 0.6,
-          pin: stage,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            actualizarPaso(self.progress);
-            emitirHumo(self.progress);
-            // El progreso del scroll (0 a 1) se mapea al tiempo del video
-            if (video && video.duration) {
-              tiempoObjetivo = self.progress * (video.duration - 0.05);
-            }
-          },
-          // Activa las líneas de velocidad solo cuando la sección se ve
-          onToggle: (self) => {
-            despegue.classList.toggle('despegue--active', self.isActive);
-          },
-        },
-      });
-
-      const total = pasos.length * 1.6 + 1; // duración interna del timeline
-
-      // El cohete sube y crece levemente durante TODO el scroll
-      tl.fromTo(
-        '#despegueRocket',
-        { y: '7vh', scale: 0.94 },
-        { y: subidaCohete, scale: escalaCohete, ease: 'none', duration: total },
-        0
-      );
-
-      // La estela luminosa crece durante la primera mitad
-      tl.fromTo(
-        '#despegueTrail',
-        { scaleY: 0, opacity: 0 },
-        { scaleY: 1, opacity: 1, ease: 'none', duration: total * 0.45 },
-        0.4
-      );
-
-      // El encabezado se desvanece cuando arranca la secuencia
-      tl.to('.despegue__head', { autoAlpha: 0, y: -24, duration: 0.8 }, 0.6);
-
-      // (Los 6 textos progresivos los maneja actualizarPaso(), arriba)
-
-      return () => {
-        gsap.ticker.remove(scrubVideo);
-        despegue.classList.remove('despegue--active');
-        // Limpia el humo acumulado al cambiar de breakpoint
-        if (smoke) {
-          gsap.killTweensOf(smoke.children);
-          smoke.innerHTML = '';
-        }
-      };
-    }
-  );
-}
-
-
-/* ================================================================
-   05. REVELADO GENÉRICO · todo lo que tenga data-reveal
+   04. REVELADO GENÉRICO · todo lo que tenga data-reveal
    hace un fade-up suave al entrar en pantalla
    ================================================================ */
 if (!reduceMotion) {
@@ -418,7 +137,7 @@ if (!reduceMotion) {
 
 
 /* ================================================================
-   06. SERVICIOS · hover 3D de las cards
+   05. SERVICIOS · hover 3D de las cards
    Solo en dispositivos con mouse (pointer: fine) y sin reduced motion.
    SIMPLIFICAR MOBILE: en celular no hay tilt, solo el glow CSS.
    ================================================================ */
@@ -449,7 +168,7 @@ if (punteroFino && !reduceMotion) {
 
 
 /* ================================================================
-   07. PROCESO · la línea luminosa se "dibuja" con el scroll
+   06. PROCESO · la línea luminosa se "dibuja" con el scroll
    ================================================================ */
 if (!reduceMotion) {
   gsap.to('#procesoLineFill', {
@@ -466,37 +185,33 @@ if (!reduceMotion) {
 
 
 /* ================================================================
-   08. VIDEOS · reproducir solo cuando se ven (rendimiento)
-   El video del hero se pausa al salir de pantalla; el del despegue
-   se maneja en la sección 04. Con reduced motion quedan en pausa
-   y se muestra el poster.
+   07. VIDEOS · reproducir solo cuando se ven (rendimiento)
+   Con reduced motion quedan en pausa y se muestra el poster.
    ================================================================ */
-const heroVideo = $('#heroVideo');
-
-if (heroVideo) {
+function gestionarVideoEnViewport(video, trigger) {
+  if (!video) return;
   if (reduceMotion) {
-    // Respeto total: nada se mueve, queda la imagen poster
-    heroVideo.removeAttribute('autoplay');
-    heroVideo.pause();
-  } else {
-    ScrollTrigger.create({
-      trigger: '.hero',
-      start: 'top bottom',
-      end: 'bottom top',
-      onToggle: (self) => {
-        if (self.isActive) heroVideo.play().catch(() => {});
-        else heroVideo.pause();
-      },
-    });
+    video.removeAttribute('autoplay');
+    video.pause();
+    return;
   }
+  ScrollTrigger.create({
+    trigger,
+    start: 'top bottom',
+    end: 'bottom top',
+    onToggle: (self) => {
+      if (self.isActive) video.play().catch(() => {});
+      else video.pause();
+    },
+  });
 }
 
-const despegueVideo = $('#despegueVideo');
-if (despegueVideo && reduceMotion) despegueVideo.removeAttribute('autoplay');
+gestionarVideoEnViewport($('#heroVideo'), '.hero');
+gestionarVideoEnViewport($('#despegueBgVideo'), '.despegue');
 
 
 /* ================================================================
-   09. RED NEURONAL DE FONDO (canvas)
+   08. RED NEURONAL DE FONDO (canvas)
    Nodos que flotan y se conectan entre sí y con el cursor.
    Representa la capa de IA que atraviesa toda la página.
    AJUSTAR CANTIDAD: CONFIG.nodosRedDesktop / nodosRedMobile
@@ -594,7 +309,7 @@ if (despegueVideo && reduceMotion) despegueVideo.removeAttribute('autoplay');
 
 
 /* ================================================================
-   10. CHAT IA · la conversación que se escribe sola
+   09. CHAT IA · la conversación que se escribe sola
    CAMBIAR LA CONVERSACIÓN AQUÍ (GUION_CHAT)
    ================================================================ */
 const GUION_CHAT = [
@@ -665,7 +380,7 @@ const GUION_CHAT = [
 
 
 /* ================================================================
-   11. TEXTO "DECODIFICADO" (efecto scramble IA)
+   10. TEXTO "DECODIFICADO" (efecto scramble IA)
    Los elementos con data-scramble se revelan letra por letra
    pasando por glifos aleatorios. También lo usan los títulos
    del despegue (sección 04).
@@ -697,7 +412,7 @@ $$('[data-scramble]').forEach((el, i) =>
 
 
 /* ================================================================
-   12. SPOTLIGHT · luz que sigue al cursor (solo desktop)
+   11. SPOTLIGHT · luz que sigue al cursor (solo desktop)
    ================================================================ */
 (function spotlight() {
   const luz = $('#spotlight');
@@ -712,7 +427,7 @@ $$('[data-scramble]').forEach((el, i) =>
 
 
 /* ================================================================
-   13. BOTONES MAGNÉTICOS · los CTA con data-magnetic se inclinan
+   12. BOTONES MAGNÉTICOS · los CTA con data-magnetic se inclinan
    levemente hacia el cursor (solo desktop)
    ================================================================ */
 if (punteroFino && !reduceMotion) {
@@ -731,3 +446,23 @@ if (punteroFino && !reduceMotion) {
     });
   });
 }
+
+
+/* ================================================================
+   13. BOTÓN FLOTANTE DE WHATSAPP
+   Aparece cuando el usuario deja atrás el hero (así no compite con
+   el CTA principal). Con reduced motion se muestra directamente.
+   ================================================================ */
+(function whatsappFlotante() {
+  const wa = $('#waFloat');
+  if (!wa) return;
+
+  if (reduceMotion) { wa.classList.add('is-visible'); return; }
+
+  // Se muestra al pasar ~70% del alto de la primera pantalla
+  const umbral = () => window.innerHeight * 0.7;
+  const actualizar = () => wa.classList.toggle('is-visible', window.scrollY > umbral());
+
+  actualizar();
+  window.addEventListener('scroll', actualizar, { passive: true });
+})();

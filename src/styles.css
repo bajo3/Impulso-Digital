@@ -340,26 +340,6 @@ body::after {
   mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 75%);
 }
 
-/* Partículas (las crea main.js para la sección despegue) */
-.particle {
-  position: absolute;
-  left: var(--x);
-  bottom: -4px;
-  width: var(--s);
-  height: var(--s);
-  border-radius: 50%;
-  background: var(--cyan);
-  opacity: 0;
-  animation: particleRise var(--d) linear infinite;
-  animation-delay: var(--delay);
-}
-@keyframes particleRise {
-  0%   { transform: translateY(0);      opacity: 0; }
-  12%  { opacity: var(--o, 0.5); }
-  85%  { opacity: var(--o, 0.5); }
-  100% { transform: translateY(-105vh); opacity: 0; }
-}
-
 /* --- Composición del hero --- */
 .hero__inner {
   position: relative;
@@ -460,200 +440,87 @@ body::after {
 
 /* ================================================================
    06. SECCIÓN "DESPEGUE DIGITAL"
-   El pin (fijado en pantalla) lo maneja GSAP en main.js.
-   AJUSTAR VELOCIDAD DEL SCROLL: CONFIG.despegueScroll en main.js
+   Video de fondo en loop + 3 pilares de lo que vendemos. Sin pin
+   ni scroll-scrub: es una sección normal con revelado (data-reveal,
+   lo maneja main.js sección 05).
+   CAMBIAR VIDEO AQUÍ: public/videos/despegue-bg.mp4
    ================================================================ */
-/* Fondo transparente: la red neuronal global se ve detrás del cohete */
-.despegue { position: relative; }
-
-.despegue__stage {
+.despegue {
   position: relative;
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  isolation: isolate;
   overflow: hidden;
-  /* leve gradiente de profundidad (sin tapar la red neuronal) */
-  background: radial-gradient(ellipse 70% 55% at 50% 60%, rgba(37, 99, 255, 0.10), transparent 70%);
+  padding: clamp(84px, 13vw, 140px) 0;
 }
 
-.despegue__head {
-  position: absolute;
-  top: calc(var(--header-h) + 28px);
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 5;
-  width: min(90%, 560px);
-}
-.despegue__title { font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin-bottom: 8px; }
-.despegue__sub { color: var(--muted); font-size: 0.98rem; }
-
-/* Cohete: el mismo video pero recortado con zoom SOLO al cohete
-   (sin marco) y con máscara difuminada para que se funda con el
-   fondo. Así parece el cohete volando, no una tarjeta.
-   AJUSTAR EL ENCUADRE AQUÍ: scale = zoom, transform-origin = qué
-   punto del video queda centrado (x% y%). */
-.despegue__rocket {
-  position: relative;
-  /* Columna alta: muestra todo el recorrido del lanzamiento.
-     CAMBIAR TAMAÑO DEL COHETE AQUÍ (más alto = cohete más grande) */
-  height: min(80vh, 740px);
-  /* misma proporción que el video recortado (320x1280) */
-  aspect-ratio: 320 / 1280;
-  z-index: 4;
-  will-change: transform;
-}
-/* Recorte enmascarado: solo hace falta para el video mp4 SIN
-   transparencia (fallback de Safari/iOS). Cuando el navegador soporta
-   el webm con canal alfa, main.js agrega la clase .sin-fondo y el
-   cohete queda recortado de verdad sobre nuestro fondo. */
-.despegue__crop {
+/* Video de fondo + velo oscuro para que el texto se lea siempre */
+.despegue__media { position: absolute; inset: 0; z-index: 0; }
+.despegue__bgvideo { width: 100%; height: 100%; object-fit: cover; }
+.despegue__veil {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-  -webkit-mask-image: radial-gradient(ellipse 58% 52% at 50% 50%, black 52%, transparent 82%);
-  mask-image: radial-gradient(ellipse 58% 52% at 50% 50%, black 52%, transparent 82%);
-}
-.despegue__rocket.sin-fondo .despegue__crop {
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-/* Con transparencia real, una sombra de luz sutil detrás del cohete */
-.despegue__rocket.sin-fondo::before {
-  content: '';
-  position: absolute;
-  inset: -8%;
-  background: radial-gradient(ellipse 55% 42% at 50% 42%, rgba(56, 217, 255, 0.12), transparent 70%);
-  filter: blur(18px);
-}
-.despegue__video {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
+  background:
+    linear-gradient(180deg, rgba(5, 10, 24, 0.86), rgba(5, 10, 24, 0.68) 35%, rgba(5, 10, 24, 0.9)),
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(37, 99, 255, 0.14), transparent 70%);
 }
 
-/* Estela luminosa azul/cyan debajo del cohete */
-.despegue__trail {
-  position: absolute;
-  top: 84%;
-  left: 50%;
-  width: 34%;
-  height: 60vh;
-  transform: translateX(-50%) scaleY(0);
-  transform-origin: top center;
-  background: linear-gradient(to bottom,
-    rgba(255, 138, 76, 0.5),          /* toque naranja del fuego */
-    rgba(56, 217, 255, 0.45) 18%,
-    rgba(37, 99, 255, 0.3) 45%,
-    transparent 90%);
-  filter: blur(14px);
-  border-radius: 50%;
-  will-change: transform, opacity;
-}
+.despegue__inner { position: relative; z-index: 2; }
+.despegue__head { text-align: center; margin-inline: auto; max-width: 620px; }
 
-/* Líneas de velocidad (las crea main.js) */
-.despegue__lines { position: absolute; inset: 0; z-index: 1; opacity: 0; }
-.despegue__lines .line {
-  position: absolute;
-  top: -20%;
-  left: var(--x);
-  width: 1px;
-  height: var(--h);
-  background: linear-gradient(to bottom, transparent, rgba(56, 217, 255, 0.5), transparent);
-}
-.despegue--active .despegue__lines .line {
-  animation: lineFall var(--d) linear infinite;
-  animation-delay: var(--delay);
-}
-@keyframes lineFall {
-  from { transform: translateY(-40vh); }
-  to   { transform: translateY(160vh); }
-}
-
-/* Partículas de la sección */
-.despegue__particles { position: absolute; inset: 0; z-index: 1; }
-
-/* --- Textos progresivos --- */
-/* Por defecto (sin JS o con reduced motion): lista estática legible */
-.despegue__steps {
-  position: relative;
-  z-index: 5;
+.despegue__pillars {
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  padding: 32px clamp(20px, 5vw, 40px);
+  margin-top: clamp(36px, 5vw, 56px);
 }
-.despegue__step h3 {
-  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
-  margin-bottom: 6px;
+.despegue__pillar {
+  padding: 30px 26px;
+  border-radius: var(--r-md);
+  background: rgba(10, 18, 40, 0.55);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+  text-align: center;
 }
-.despegue__step h3::after {
-  /* subrayado luminoso */
-  content: '';
-  display: block;
-  width: 56px;
-  height: 2px;
-  margin-top: 10px;
-  background: var(--grad);
-  border-radius: 2px;
-  box-shadow: 0 0 14px rgba(56, 217, 255, 0.6);
+.despegue__pillar-icon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--cyan);
+  background: rgba(56, 217, 255, 0.1);
+  border: 1px solid rgba(56, 217, 255, 0.22);
 }
-.despegue__step p { color: var(--muted); max-width: 30ch; }
+.despegue__pillar-icon svg {
+  width: 26px; height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.despegue__pillar h3 { font-size: 1.15rem; margin-bottom: 8px; letter-spacing: -0.01em; }
+.despegue__pillar p { color: var(--muted); font-size: 0.94rem; line-height: 1.55; }
 
-/* Con el pin activo (clase que agrega main.js): el cohete va DEJANDO
-   los textos a su paso. Quedan fijos a los costados, en zigzag, y se
-   acumulan: al final del scroll se ven los 6 hitos del recorrido. */
-.despegue--pin .despegue__stage { flex-direction: row; }
-.despegue--pin .despegue__steps { position: static; padding: 0; }
-.despegue--pin .despegue__step {
+/* Cohete chico decorativo: solo flota subiendo y bajando dentro de
+   esta sección (NO sigue el progreso del scroll, es una animación
+   continua simple). CAMBIAR POSICIÓN/TAMAÑO AQUÍ. */
+.despegue__mini-rocket {
   position: absolute;
-  /* Posición vertical de cada hito (el cohete los suelta de a uno).
-     CAMBIAR DISTRIBUCIÓN AQUÍ: cada nth-of-type = un escalón. */
-  top: var(--row, 50%);
-  width: min(30vw, 320px);
-  opacity: 0;             /* GSAP las revela a medida que el cohete sube */
-  visibility: hidden;
+  top: 12%;
+  right: clamp(20px, 7vw, 90px);
+  width: 44px;
+  height: 44px;
+  z-index: 1;
+  color: var(--cyan);
+  opacity: 0.85;
+  filter: drop-shadow(0 0 14px rgba(56, 217, 255, 0.55));
+  animation: cohetitoFloat 4.5s ease-in-out infinite;
 }
-/* Escalonado vertical (top del recuadro) para que no se solapen */
-.despegue--pin .despegue__step:nth-of-type(1) { --row: 13%; }
-.despegue--pin .despegue__step:nth-of-type(2) { --row: 27%; }
-.despegue--pin .despegue__step:nth-of-type(3) { --row: 41%; }
-.despegue--pin .despegue__step:nth-of-type(4) { --row: 55%; }
-.despegue--pin .despegue__step:nth-of-type(5) { --row: 69%; }
-.despegue--pin .despegue__step:nth-of-type(6) { --row: 83%; }
-.despegue--pin .despegue__step[data-side="left"]  { left: clamp(24px, 7vw, 110px); }
-.despegue--pin .despegue__step[data-side="right"] { right: clamp(24px, 7vw, 110px); text-align: right; }
-.despegue--pin .despegue__step[data-side="right"] h3::after { margin-left: auto; }
-.despegue--pin .despegue__step[data-side="right"] p { margin-left: auto; }
-
-/* Estela de humo/partículas que el cohete va dejando (puffs los crea
-   main.js y los anima desvaneciéndose). */
-/* z-index 5: por encima del cohete (z-index 4) para que la estela se vea
-   alrededor y debajo de él; queda por debajo de los textos (también z 5
-   pero posteriores en el DOM). */
-.despegue__smoke { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
-.despegue__smoke .smoke {
-  position: absolute;
-  width: var(--s); height: var(--s);
-  margin-left: calc(var(--s) / -2);
-  margin-top: calc(var(--s) / -2);
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(210, 235, 255, 0.85),
-    rgba(56, 217, 255, 0.40) 40%,
-    rgba(37, 99, 255, 0.16) 65%,
-    transparent 75%);
-  filter: blur(7px);
-  will-change: transform, opacity;
-}
-/* Los primeros puffs (recién salidos de la cola) tienen un núcleo cálido,
-   como el fuego del cohete. main.js les pone la clase .smoke--fuego. */
-.despegue__smoke .smoke--fuego {
-  background: radial-gradient(circle,
-    rgba(255, 214, 170, 0.9),
-    rgba(255, 138, 76, 0.5) 38%,
-    rgba(56, 217, 255, 0.22) 64%,
-    transparent 76%);
+.despegue__mini-rocket svg { width: 100%; height: 100%; }
+@keyframes cohetitoFloat {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  50%      { transform: translateY(-24px) rotate(-6deg); }
 }
 
 
@@ -1153,6 +1020,146 @@ body::after {
 
 
 /* ================================================================
+   09B. FAQ · acordeón de preguntas frecuentes
+   Usa <details>/<summary> nativos: accesible y funciona sin JS.
+   ================================================================ */
+.faq {
+  position: relative;
+  padding: clamp(80px, 12vw, 130px) 0;
+}
+.faq .section-head { text-align: center; margin-inline: auto; }
+
+.faq__list {
+  max-width: 760px;
+  margin-inline: auto;
+  display: grid;
+  gap: 14px;
+}
+
+.faq__item {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+.faq__item[open] {
+  border-color: rgba(56, 217, 255, 0.4);
+  background: rgba(15, 26, 56, 0.7);
+}
+
+.faq__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px clamp(20px, 3vw, 28px);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  list-style: none;          /* oculta la flechita por defecto */
+}
+.faq__item summary::-webkit-details-marker { display: none; }
+.faq__item summary:hover { color: var(--cyan); }
+.faq__item summary:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: -2px;
+  border-radius: var(--r-md);
+}
+
+/* Ícono +/× a la derecha (dos líneas que rotan al abrir) */
+.faq__icon {
+  position: relative;
+  flex: none;
+  width: 22px;
+  height: 22px;
+}
+.faq__icon::before,
+.faq__icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--cyan);
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease;
+}
+.faq__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+.faq__item[open] .faq__icon::after { transform: translate(-50%, -50%) rotate(0); }
+
+.faq__answer {
+  padding: 0 clamp(20px, 3vw, 28px) 24px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.faq__answer p { max-width: 62ch; }
+
+/* Animación suave de apertura (se respeta prefers-reduced-motion) */
+.faq__item[open] .faq__answer {
+  animation: faqOpen 0.35s ease both;
+}
+@keyframes faqOpen {
+  from { opacity: 0; transform: translateY(-8px); }
+}
+
+
+/* ================================================================
+   09C. BOTÓN FLOTANTE DE WHATSAPP
+   Fijo abajo a la derecha. Oculto al inicio; main.js le agrega
+   .is-visible al scrollear (sección 14).
+   ================================================================ */
+.wa-float {
+  position: fixed;
+  right: clamp(16px, 4vw, 28px);
+  bottom: clamp(16px, 4vw, 28px);
+  z-index: 99;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(135deg, #25d366, #128c4b);
+  box-shadow: 0 10px 30px rgba(18, 140, 75, 0.45),
+              inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  /* arranca oculto y entra cuando main.js agrega .is-visible */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.8);
+  transition: opacity 0.35s ease, transform 0.35s ease,
+              visibility 0.35s ease, box-shadow 0.3s ease;
+}
+.wa-float.is-visible { opacity: 1; visibility: visible; transform: none; }
+.wa-float:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 38px rgba(18, 140, 75, 0.55);
+}
+.wa-float svg { width: 30px; height: 30px; }
+
+/* Pulso sutil para llamar la atención (se apaga con reduced motion) */
+.wa-float::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(37, 211, 102, 0.6);
+  animation: waPulse 2.4s ease-out infinite;
+}
+@keyframes waPulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  70%  { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+
+/* ================================================================
    10. FOOTER
    ================================================================ */
 .footer {
@@ -1229,23 +1236,10 @@ body::after {
   .hero__actions .btn { flex: 1 1 auto; justify-content: center; min-height: 54px; }
   .hero__frame { width: min(84vw, 360px); animation: none; } /* sin flotación en mobile */
 
-  /* --- Despegue: en mobile, un texto por vez, centrado abajo del cohete
-     (acumularlos en pantalla chica queda amontonado). El escalonado
-     vertical de desktop (--row) se anula con top:auto. --- */
-  .despegue--pin .despegue__rocket { height: min(62vh, 520px); margin-top: -9vh; }
-  .despegue--pin .despegue__step {
-    width: min(86vw, 420px);
-    top: auto;
-    bottom: 7vh;
-    /* centrado con márgenes automáticos: no usa translateX(-50%), así
-       las animaciones de GSAP (que escriben transform) no lo descentran */
-    left: 0 !important;
-    right: 0 !important;
-    margin-inline: auto;
-    text-align: center !important;
-  }
-  .despegue--pin .despegue__step h3::after { margin-inline: auto; }
-  .despegue--pin .despegue__step p { margin-inline: auto; }
+  /* --- Despegue: los 3 pilares pasan a una columna; el cohete chico
+     se achica un poco para no robarle espacio al título --- */
+  .despegue__pillars { grid-template-columns: 1fr; }
+  .despegue__mini-rocket { width: 34px; height: 34px; top: 8%; }
 
   /* --- IA en acción: columna única, chat más bajo --- */
   .ia__inner { grid-template-columns: 1fr; }
@@ -1277,7 +1271,9 @@ body::after {
   }
 
   .hero__frame { animation: none; }
-  .particle, .despegue__lines .line { display: none; }
   .marquee__track { animation: none; }
   .spotlight, #redNeuronal { display: none; }
+  .wa-float::before { animation: none; }
+  .despegue__mini-rocket { animation: none; }
+  .despegue__bgvideo { display: none; } /* queda el poster, estático */
 }
