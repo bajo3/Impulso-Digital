@@ -1181,57 +1181,6 @@ body::after {
 
 
 /* ================================================================
-   07D. TESTIMONIOS
-   ================================================================ */
-.testimonios { padding: clamp(80px, 12vw, 140px) 0; }
-.testimonios__head { text-align: center; margin-inline: auto; }
-
-.testimonios__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.testimonio {
-  padding: 28px 26px;
-  border-radius: var(--r-md);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  backdrop-filter: blur(12px);
-  display: flex;
-  flex-direction: column;
-}
-.testimonio__stars {
-  color: var(--cyan);
-  letter-spacing: 2px;
-  margin-bottom: 14px;
-  font-size: 0.9rem;
-}
-.testimonio__texto {
-  color: var(--ink);
-  line-height: 1.6;
-  font-size: 0.96rem;
-  margin-bottom: 22px;
-  flex: 1;
-}
-.testimonio__autor { display: flex; align-items: center; gap: 12px; }
-.testimonio__avatar {
-  width: 42px; height: 42px;
-  flex: none;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.85rem;
-  background: var(--grad);
-  color: #fff;
-}
-.testimonio__autor strong { display: block; font-size: 0.92rem; }
-.testimonio__autor span { color: var(--muted); font-size: 0.82rem; }
-
-
-/* ================================================================
    08. PROCESO · timeline con línea luminosa
    ================================================================ */
 .proceso {
@@ -1543,8 +1492,6 @@ body::after {
 
   .reportes__inner { grid-template-columns: 1fr; }
   .reportes__panel { max-width: 480px; margin-inline: auto; }
-
-  .testimonios__grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 860px) {
