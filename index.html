@@ -12,15 +12,15 @@
        las URLs de abajo (canonical, og:url, og:image, twitter, y
        el bloque JSON-LD al final del <head>).
        ============================================================ -->
-  <title>Impulso Digital | Creación de Webs y Marketing con IA</title>
-  <meta name="description" content="Creamos webs profesionales que venden y las potenciamos con Meta Ads, Google Ads, chatbots y CRM. Tu sistema digital completo, en un solo lugar. Tandil." />
+  <title>Diseño Web y Marketing con IA en Tandil | Impulso Digital</title>
+  <meta name="description" content="Creamos webs profesionales que convierten visitas en consultas y las potenciamos con Meta Ads, Google Ads, atención con IA y CRM. Agencia en Tandil. Presupuesto gratis por WhatsApp." />
   <meta name="theme-color" content="#050a18" />
   <link rel="canonical" href="https://impulso-digital.vercel.app/" />
 
   <!-- Open Graph (vista previa al compartir el link en WhatsApp/Facebook).
        og:image DEBE ser una URL absoluta o no se ve la imagen. -->
-  <meta property="og:title" content="Impulso Digital | Creación de Webs y Marketing con IA" />
-  <meta property="og:description" content="Webs que venden, campañas en Meta y Google Ads, chatbots y CRM. Tu sistema digital completo." />
+  <meta property="og:title" content="Diseño Web y Marketing con IA en Tandil | Impulso Digital" />
+  <meta property="og:description" content="Webs que convierten visitas en clientes, campañas en Meta y Google Ads, atención con IA y CRM. Tu sistema digital completo." />
   <meta property="og:image" content="https://impulso-digital.vercel.app/images/hero-poster.jpg" />
   <meta property="og:url" content="https://impulso-digital.vercel.app/" />
   <meta property="og:type" content="website" />
@@ -29,8 +29,8 @@
 
   <!-- Twitter / X (vista previa al compartir) -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Impulso Digital | Creación de Webs y Marketing con IA" />
-  <meta name="twitter:description" content="Webs que venden, campañas en Meta y Google Ads, chatbots y CRM. Tu sistema digital completo." />
+  <meta name="twitter:title" content="Diseño Web y Marketing con IA en Tandil | Impulso Digital" />
+  <meta name="twitter:description" content="Webs que convierten visitas en clientes, campañas en Meta y Google Ads, atención con IA y CRM. Tu sistema digital completo." />
   <meta name="twitter:image" content="https://impulso-digital.vercel.app/images/hero-poster.jpg" />
 
   <!-- Favicon (cohete). CAMBIAR AQUÍ si querés usar un .ico propio -->
@@ -61,7 +61,10 @@
     "image": "https://impulso-digital.vercel.app/images/hero-poster.jpg",
     "telephone": "+5492494601118",
     "priceRange": "$$",
-    "areaServed": { "@type": "City", "name": "Tandil" },
+    "areaServed": [
+      { "@type": "City", "name": "Tandil" },
+      { "@type": "Country", "name": "Argentina" }
+    ],
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Tandil",
@@ -105,6 +108,16 @@
         "@type": "Question",
         "name": "¿Trabajan solo en Tandil?",
         "acceptedAnswer": { "@type": "Answer", "text": "Estamos en Tandil pero trabajamos con clientes de todo el país de forma 100% online. La distancia no es un problema: coordinamos todo por WhatsApp y videollamada." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Necesito saber de tecnología?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Nos encargamos de toda la parte técnica y te explicamos lo importante en lenguaje claro, sin tecnicismos. Vos conocés tu negocio; nosotros hacemos que se vea profesional y venda online." }
+      },
+      {
+        "@type": "Question",
+        "name": "Ya tengo una web, ¿me pueden ayudar igual?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sí. Podemos rediseñarla, mejorarla o sumarle lo que le falta: campañas, atención con IA, CRM o SEO. Primero la revisamos sin cargo y te decimos con honestidad qué conviene." }
       }
     ]
   }
@@ -146,6 +159,7 @@
       <nav class="header__nav" id="nav" aria-label="Navegación principal">
         <a href="#inicio">Inicio</a>
         <a href="#servicios">Servicios</a>
+        <a href="#rubros">Rubros</a>
         <a href="#proceso">Proceso</a>
         <a href="#contacto">Contacto</a>
 
@@ -193,31 +207,35 @@
           <p class="hero__eyebrow" data-hero="1">
             <span class="hero__eyebrow-dot"></span>
             <!-- data-scramble = el texto se "decodifica" al cargar -->
-            <span data-scramble>Agencia de Marketing Digital</span>
+            <span data-scramble>Impulso Digital · Tandil, Buenos Aires</span>
           </p>
 
-          <!-- Título principal -->
+          <!-- Título principal: beneficio para el cliente (la marca ya
+               está en el header y en el eyebrow) -->
           <h1 class="hero__title" data-hero="2">
-            Impulso<br /><span class="text-gradient">Digital</span>
+            Webs que convierten<br /><span class="text-gradient">visitas en clientes</span>
           </h1>
 
           <!-- Bajada -->
           <p class="hero__text" data-hero="3">
-            ¿Buscás un impulso digital? Creamos tu web profesional y la
-            potenciamos con Meta Ads, Google Ads, chatbots y CRM. Todo tu
-            sistema de ventas, en un solo lugar.
+            Creamos tu web profesional y la ponemos a trabajar: campañas en
+            Meta y Google, atención automática por WhatsApp y seguimiento
+            de cada consulta. Un solo sistema para que te escriban más clientes.
           </p>
 
           <!-- Botones CTA -->
           <div class="hero__actions" data-hero="4">
             <!-- CAMBIAR WHATSAPP AQUÍ · data-magnetic = el botón "atrae" al cursor -->
             <a class="btn btn--primary" data-magnetic
-               href="https://wa.me/5492494601118?text=Hola,%20quiero%20una%20web%20profesional%20con%20Impulso%20Digital"
+               href="https://wa.me/5492494601118?text=Hola!%20Quiero%20un%20presupuesto%20para%20la%20web%20de%20mi%20negocio."
                target="_blank" rel="noopener">
-              Quiero mi web
+              Pedir presupuesto gratis
             </a>
-            <a class="btn btn--ghost" href="#servicios">Ver servicios</a>
+            <a class="btn btn--ghost" href="#comparativa">Ver cómo funciona</a>
           </div>
+
+          <!-- Microcopy que saca fricción del CTA -->
+          <p class="hero__note" data-hero="5">Respondemos en el día · Sin compromiso</p>
         </div>
 
         <!-- Video protagonista del cohete -->
@@ -273,6 +291,79 @@
         <div class="confianza__item">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.3 3.1-6 7-6s7 2.7 7 6"/></svg>
           <span>Atención directa, sin intermediarios</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         2C. COMPARATIVA ANTES / DESPUÉS
+         Funciona como sección "problema del cliente": primero el dolor,
+         después la solución. CAMBIAR TEXTOS AQUÍ (dos listas de <li>).
+         ============================================================ -->
+    <section class="comparativa" id="comparativa">
+      <div class="container">
+        <header class="section-head comparativa__head" data-reveal>
+          <p class="section-eyebrow">¿Te suena?</p>
+          <h2 class="section-title">Lo que le pasa a la mayoría<br />de los negocios hoy</h2>
+        </header>
+
+        <div class="comparativa__grid">
+          <article class="comparativa__col comparativa__col--antes" data-reveal>
+            <span class="comparativa__tag">Tu negocio hoy</span>
+            <ul>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                Te escriben fuera de horario y esa venta se pierde
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                Te buscan en Google y aparece tu competencia
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                Contactos dispersos entre WhatsApp, Instagram y papelitos
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                Invertís en publicidad sin saber qué funciona
+              </li>
+            </ul>
+          </article>
+
+          <div class="comparativa__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+
+          <article class="comparativa__col comparativa__col--despues" data-reveal>
+            <span class="comparativa__tag comparativa__tag--ok">Con Impulso Digital</span>
+            <ul>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
+                Una IA responde y agenda por vos, las 24 horas
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
+                Web optimizada para aparecer en Google y para vender
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
+                CRM que ordena y sigue cada contacto
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
+                Reportes claros de cada peso invertido
+              </li>
+            </ul>
+          </article>
+        </div>
+
+        <!-- CTA contextual: responde al dolor recién mostrado -->
+        <div class="comparativa__cta" data-reveal>
+          <a class="btn btn--primary" data-magnetic
+             href="https://wa.me/5492494601118?text=Hola!%20Quiero%20mejorar%20la%20presencia%20digital%20de%20mi%20negocio."
+             target="_blank" rel="noopener">
+            Quiero dar ese salto
+          </a>
         </div>
       </div>
     </section>
@@ -339,70 +430,6 @@
             </div>
             <h3>CRM y seguimiento</h3>
             <p>Cada contacto ordenado y cada venta con seguimiento real, sin perder a nadie.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         3B. COMPARATIVA ANTES / DESPUÉS
-         Contraste entre problemas comunes y la solución con Impulso
-         Digital. CAMBIAR TEXTOS AQUÍ (dos listas de <li>).
-         ============================================================ -->
-    <section class="comparativa" id="comparativa">
-      <div class="container">
-        <header class="section-head comparativa__head" data-reveal>
-          <p class="section-eyebrow">El cambio real</p>
-          <h2 class="section-title">Antes y después de<br />Impulso Digital</h2>
-        </header>
-
-        <div class="comparativa__grid">
-          <article class="comparativa__col comparativa__col--antes" data-reveal>
-            <span class="comparativa__tag">Sin Impulso Digital</span>
-            <ul>
-              <li>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-                Perdés clientes que escriben fuera de horario
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-                Tu web no aparece cuando te buscan en Google
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-                Contactos dispersos, sin seguimiento real
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-                Invertís en publicidad sin saber qué funciona
-              </li>
-            </ul>
-          </article>
-
-          <div class="comparativa__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </div>
-
-          <article class="comparativa__col comparativa__col--despues" data-reveal>
-            <span class="comparativa__tag comparativa__tag--ok">Con Impulso Digital</span>
-            <ul>
-              <li>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
-                Una IA responde y agenda por vos, las 24 horas
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
-                Web optimizada para SEO y para vender
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
-                CRM que ordena y sigue cada contacto
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg>
-                Reportes claros de cada peso invertido
-              </li>
-            </ul>
           </article>
         </div>
       </div>
@@ -611,6 +638,13 @@
               Ningún cliente se queda sin respuesta
             </li>
           </ul>
+
+          <!-- CTA contextual: el visitante acaba de ver la demo -->
+          <a class="btn btn--primary ia__cta" data-magnetic
+             href="https://wa.me/5492494601118?text=Hola!%20Quiero%20que%20una%20IA%20atienda%20las%20consultas%20de%20mi%20negocio."
+             target="_blank" rel="noopener">
+            Quiero esto en mi negocio
+          </a>
         </div>
 
         <!-- Teléfono con el chat automático -->
@@ -699,6 +733,79 @@
     </section>
 
     <!-- ============================================================
+         4D. RUBROS · casos de uso por tipo de negocio
+         El mismo sistema explicado en el idioma de cada rubro.
+         Las cards usan class="card" para heredar el hover 3D.
+         CAMBIAR TEXTOS/ÍCONOS AQUÍ.
+         ============================================================ -->
+    <section class="rubros" id="rubros">
+      <div class="container">
+        <header class="section-head rubros__head" data-reveal>
+          <p class="section-eyebrow">Para quién</p>
+          <h2 class="section-title">Pensado para negocios reales,<br />de Tandil y de todo el país</h2>
+          <p class="section-text">El mismo sistema, adaptado a cómo vende cada rubro.</p>
+        </header>
+
+        <div class="rubros__grid">
+          <article class="card card--rubro" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 9l1-5h14l1 5"/><path d="M4 9a2.4 2.4 0 0 0 4 1.8A2.4 2.4 0 0 0 12 10.8 2.4 2.4 0 0 0 16 10.8 2.4 2.4 0 0 0 20 9"/><path d="M5 11v9h14v-9"/><path d="M9 20v-6h6v6"/></svg>
+            </div>
+            <h3 class="card__title">Comercios y tiendas</h3>
+            <p class="card__text">Catálogo online, respuestas al instante y campañas para que te compren más.</p>
+          </article>
+
+          <article class="card card--rubro" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/><path d="M5.5 12H9l1.5-3 2 5 1.5-2h3"/></svg>
+            </div>
+            <h3 class="card__title">Salud y estética</h3>
+            <p class="card__text">Turnos que se agendan solos por WhatsApp y recordatorios que bajan las ausencias.</p>
+          </article>
+
+          <article class="card card--rubro" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+            </div>
+            <h3 class="card__title">Profesionales y estudios</h3>
+            <p class="card__text">Una web seria que genera confianza y un CRM que ordena cada consulta.</p>
+          </article>
+
+          <article class="card card--rubro" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 21V8l6-4v17"/><path d="M10 21V12l6-3v12"/><path d="M16 21v-8l4-1v9"/><path d="M2 21h20"/></svg>
+            </div>
+            <h3 class="card__title">Inmobiliarias y constructoras</h3>
+            <p class="card__text">Propiedades publicadas, interesados calificados y seguimiento de cada visita.</p>
+          </article>
+
+          <article class="card card--rubro" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 15l1.5-5.5A2 2 0 0 1 8.4 8h7.2a2 2 0 0 1 1.9 1.5L19 15"/><rect x="3" y="15" width="18" height="4" rx="1.5"/><path d="M6 19v1.5M18 19v1.5"/><circle cx="7.5" cy="17" r=".6" fill="currentColor" stroke="none"/><circle cx="16.5" cy="17" r=".6" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <h3 class="card__title">Agencias de autos</h3>
+            <p class="card__text">Tu stock online, consultas filtradas y seguimiento hasta cerrar la venta.</p>
+          </article>
+
+          <article class="card card--rubro" data-reveal>
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 3v7a2 2 0 0 0 2 2v9"/><path d="M5 3v4h4V3"/><path d="M9 3v7"/><path d="M17 3c-1.7 1.2-2.5 3.2-2.5 5.5 0 1.4.8 2.5 2.5 2.5v10"/></svg>
+            </div>
+            <h3 class="card__title">Gastronomía y turismo</h3>
+            <p class="card__text">Reservas y pedidos atendidos 24/7, incluso en temporada alta.</p>
+          </article>
+        </div>
+
+        <p class="rubros__nota" data-reveal>
+          ¿Tu rubro no está en la lista?
+          <a href="https://wa.me/5492494601118?text=Hola!%20Tengo%20un%20negocio%20y%20quiero%20saber%20c%C3%B3mo%20me%20pueden%20ayudar."
+             target="_blank" rel="noopener">Contanos qué hacés</a>
+          — el sistema se adapta a cómo vende tu negocio.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
          5. PROCESO DE TRABAJO (timeline con línea luminosa)
          CAMBIAR TEXTOS AQUÍ: cada paso es un <li class="paso">
          ============================================================ -->
@@ -753,6 +860,16 @@
             </div>
           </li>
         </ol>
+
+        <!-- CTA contextual: el paso 1 es gratis, oferta de baja fricción -->
+        <div class="proceso__cta" data-reveal>
+          <p>El paso 1 es gratis: te decimos cómo está tu presencia digital hoy y qué mejoraríamos.</p>
+          <a class="btn btn--primary" data-magnetic
+             href="https://wa.me/5492494601118?text=Hola!%20Quiero%20un%20diagn%C3%B3stico%20gratis%20de%20mi%20presencia%20digital."
+             target="_blank" rel="noopener">
+            Pedir mi diagnóstico gratis
+          </a>
+        </div>
 
       </div>
     </section>
@@ -834,6 +951,30 @@
             </div>
           </details>
 
+          <details class="faq__item">
+            <summary>
+              ¿Necesito saber de tecnología?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              <p>No. Nos encargamos de toda la parte técnica y te explicamos lo importante
+              en lenguaje claro, sin tecnicismos. Vos conocés tu negocio; nosotros hacemos
+              que se vea profesional y venda online.</p>
+            </div>
+          </details>
+
+          <details class="faq__item">
+            <summary>
+              Ya tengo una web, ¿me pueden ayudar igual?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              <p>Sí. Podemos rediseñarla, mejorarla o sumarle lo que le falta: campañas,
+              atención con IA, CRM o SEO. Primero la revisamos sin cargo y te decimos
+              con honestidad qué conviene.</p>
+            </div>
+          </details>
+
         </div>
       </div>
     </section>
@@ -850,13 +991,17 @@
             ¿Listo para tener una <span class="text-gradient">web que venda</span><br />
             y un sistema digital que impulse tu negocio?
           </h2>
+          <p class="cta__text">
+            Contanos qué hace tu negocio y te respondemos con ideas concretas
+            y un presupuesto claro. Sin compromiso.
+          </p>
           <a class="btn btn--primary btn--lg" data-magnetic
              href="https://wa.me/5492494601118?text=Hola,%20quiero%20impulsar%20mi%20negocio%20con%20Impulso%20Digital"
              target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0v-1a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0-1 0"/></svg>
             Hablar por WhatsApp
           </a>
-          <p class="cta__note">Respondemos en el día.</p>
+          <p class="cta__note">Respondemos en el día · Atención directa con quien hace el trabajo</p>
         </div>
       </div>
     </section>
@@ -873,6 +1018,7 @@
       <nav class="footer__nav" aria-label="Navegación del pie">
         <a href="#inicio">Inicio</a>
         <a href="#servicios">Servicios</a>
+        <a href="#rubros">Rubros</a>
         <a href="#proceso">Proceso</a>
         <a href="#contacto">Contacto</a>
       </nav>

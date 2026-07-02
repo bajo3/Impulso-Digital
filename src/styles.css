@@ -376,10 +376,12 @@ body::after {
 }
 
 .hero__title {
-  font-size: clamp(3.2rem, 9vw, 6rem);
+  /* Titular de beneficio (más largo que el nombre de marca):
+     tamaño calibrado para que "Webs que convierten" entre en una línea */
+  font-size: clamp(2rem, 3.9vw, 3.15rem);
   font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.045em;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
   margin-bottom: 24px;
 }
 
@@ -391,6 +393,14 @@ body::after {
 }
 
 .hero__actions { display: flex; flex-wrap: wrap; gap: 16px; }
+
+/* Microcopy bajo los botones: saca fricción antes del clic */
+.hero__note {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
 
 /* --- Video del cohete en marco "portal" --- */
 .hero__media { position: relative; justify-self: center; }
@@ -693,6 +703,12 @@ body::after {
   stroke-linejoin: round;
 }
 
+/* CTA contextual al pie de la comparativa */
+.comparativa__cta {
+  text-align: center;
+  margin-top: clamp(36px, 5vw, 52px);
+}
+
 
 /* ================================================================
    07. SERVICIOS · cards glass con hover 3D
@@ -945,6 +961,9 @@ body::after {
   stroke-linejoin: round;
 }
 
+/* CTA contextual después de la demo del chat */
+.ia__cta { margin-top: 32px; }
+
 /* --- Teléfono / ventana de chat --- */
 .ia__phone { position: relative; justify-self: center; width: min(100%, 370px); }
 
@@ -1181,6 +1200,38 @@ body::after {
 
 
 /* ================================================================
+   07D. RUBROS · casos de uso por tipo de negocio
+   Las cards reutilizan .card (mismo vidrio + hover 3D de servicios).
+   ================================================================ */
+.rubros {
+  position: relative;
+  padding: clamp(80px, 12vw, 140px) 0;
+}
+.rubros__head { text-align: center; margin-inline: auto; }
+
+.rubros__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.card--rubro { padding: 28px 24px; }
+.card--rubro .card__icon { margin-bottom: 16px; }
+
+/* Nota final: invita a los rubros que no aparecen en la grilla */
+.rubros__nota {
+  margin-top: clamp(28px, 4vw, 40px);
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.rubros__nota a {
+  color: var(--cyan);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ================================================================
    08. PROCESO · timeline con línea luminosa
    ================================================================ */
 .proceso {
@@ -1248,6 +1299,17 @@ body::after {
 .paso__title { font-size: 1.3rem; margin-bottom: 6px; }
 .paso__text { color: var(--muted); max-width: 46ch; }
 
+/* CTA al pie del proceso: ancla la oferta "diagnóstico gratis" */
+.proceso__cta {
+  text-align: center;
+  margin-top: clamp(44px, 6vw, 64px);
+}
+.proceso__cta p {
+  color: var(--muted);
+  max-width: 46ch;
+  margin: 0 auto 20px;
+}
+
 /* En desktop la timeline se centra y los pasos alternan lados */
 @media (min-width: 860px) {
   .proceso__line { left: 50%; transform: translateX(-50%); }
@@ -1299,7 +1361,15 @@ body::after {
 
 .cta__title {
   font-size: clamp(1.8rem, 4.4vw, 3.1rem);
-  margin-bottom: 40px;
+  margin-bottom: 18px;
+}
+
+/* Bajada del CTA final: dice qué va a pasar al escribir */
+.cta__text {
+  color: var(--muted);
+  font-size: 1.02rem;
+  max-width: 54ch;
+  margin: 0 auto 36px;
 }
 
 .cta__note {
@@ -1492,6 +1562,8 @@ body::after {
 
   .reportes__inner { grid-template-columns: 1fr; }
   .reportes__panel { max-width: 480px; margin-inline: auto; }
+
+  .rubros__grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 860px) {
@@ -1550,6 +1622,7 @@ body::after {
 
 @media (max-width: 560px) {
   .servicios__grid { grid-template-columns: 1fr; }
+  .rubros__grid { grid-template-columns: 1fr; }
 }
 
 
